@@ -1,0 +1,121 @@
+@use "../variables" as *;
+@use "../media" as *;
+
+.modal-cart {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 676px;
+
+  border-radius: 24px;
+  background-color: #fff;
+  box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.15);
+
+  &_close {
+    display: none;
+  }
+
+  &__image-container {
+    background-image: image-set(
+        url("/img/bg-dog-cart.jpg") 1x,
+        url("/img/bg-dog-cart@2x.jpg") 2x
+    );
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  &__content {
+    grid-column: 2 / 3;
+    padding: 24px;
+  }
+
+  &__title {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &__shopping-list {
+    margin-bottom: 74px;
+  }
+
+  &__pickup-form {
+    font-size: 16px;
+  }
+
+  &__pickup-store {
+    padding: 0;
+    margin-bottom: 16px;
+    border: none;
+  }
+
+  &__pickup-title {
+    font-weight: 700;
+  }
+
+  &__store-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__store-title {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &::after {
+      content: "";
+      position: relative;
+      display: block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid $green;
+
+      border-radius: 24px;
+      outline: 2px solid transparent;
+      cursor: pointer;
+      user-select: none;
+
+      transition-property: background-color, transform;
+      transition-duration: 0.2s, 0.05s;
+      transition-timing-function: ease-in-out;
+    }
+  }
+
+  &__store-radio {
+    &:hover + .modal-cart__store-title::after {
+      border-color: #004e1e;
+    }
+
+    &:focus-visible + .modal-cart__store-title::after {
+      outline-color: $carrot;
+    }
+
+    &:active + .modal-cart__store-title::after {
+      background-color: $green;
+      border-color: $green;
+      transform: scale(0.9);
+    }
+
+    &:checked + .modal-cart__store-title::after {
+      background-color: $green;
+    }
+  }
+
+  &__submit-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__submit-button {
+    padding: 12px 24px;
+  }
+
+  &__total-price {
+    font-weight: 700;
+    color: $purple;
+  }
+}

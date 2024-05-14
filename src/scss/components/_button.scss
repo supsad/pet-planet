@@ -1,0 +1,74 @@
+@use "../variables" as *;
+@use "../media" as *;
+
+.button {
+  display: block;
+  padding: 16px 24px;
+
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.4;
+  border: 1px solid transparent;
+  border-radius: 40px;
+  color: $light;
+  outline: 1px solid transparent;
+  transition-property: background-color, transform;
+  transition-duration: 0.3s, 0.1s;
+  transition-timing-function: ease-in-out;
+
+  &_arrow {
+    display: flex;
+    min-width: 209px;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+
+    &:after {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 16px;
+      background-image: url("/img/arrow-up.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+
+  &_green {
+    background-color: $green;
+
+    &:hover {
+      background-color: #00772f;
+    }
+  }
+
+  &_purple {
+    background-color: $purple;
+
+    &:hover {
+      background-color: #981fd1;
+    }
+  }
+
+  &:focus-visible {
+    outline-color: $carrot;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  @include laptop {
+    padding: 16px 36px;
+  }
+
+  @include mobile {
+    padding: 12px 24px;
+  }
+}

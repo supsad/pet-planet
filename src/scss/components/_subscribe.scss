@@ -69,29 +69,14 @@
     top: 0;
     bottom: 0;
     background-color: $purple;
-    border: 1px solid transparent;
-    border-radius: 40px;
-    padding: 16px 31px;
-    font-weight: 700;
-    line-height: 1.4;
-    color: $light;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    min-width: 209px;
+
+    @include laptop {
+      padding: 16px 42px;
+    }
 
     @include mobile {
       padding: 0;
       min-width: 54px;
-    }
-
-    &:after {
-      content: "";
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-image: url("/img/arrow-up.svg");
     }
   }
 

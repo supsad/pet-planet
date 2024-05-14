@@ -1,9 +1,14 @@
 @use "default";
+@use "components/button";
 @use "components/header";
 @use "components/hero";
 @use "components/about";
 @use "components/advantages";
 @use "components/subscribe";
 @use "components/footer";
+@use "components/store";
+@use "components/product";
+@use "components/modal-cart";
+@use "components/cart-item";
 
 @import "normalize.css";

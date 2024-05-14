@@ -40,15 +40,8 @@
   }
 
   &__buy-button {
-    display: block;
     width: 100%;
     margin-top: auto;
     padding: 16px 24px;
-
-    font-weight: 700;
-    text-align: center;
-    color: $light;
-    background-color: $purple;
-    border-radius: 40px;
   }
 }

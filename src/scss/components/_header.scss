@@ -1,0 +1,28 @@
+@use "../media" as *;
+
+.header {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+
+  @include laptop {
+    top: 40px;
+  }
+
+  @include tablet {
+    top: 32px;
+  }
+
+  @include mobile {
+    top: 22px;
+  }
+
+  &__logo {
+    width: 331px;
+    @include tablet {
+      width: 200px;
+    }
+  }
+}

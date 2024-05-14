@@ -1,0 +1,38 @@
+@use "media" as *;
+
+:root {
+  --font-size: 24px;
+
+  @include bigscreen {
+    --font-size: 28px;
+  }
+
+  @include laptop {
+    --font-size: 20px;
+  }
+
+  @include mobile {
+    --font-size: 16px;
+  }
+}
+
+$font-family: "Onest", sans-serif;
+$font-size: var(--font-size);
+$font-weight: 400;
+$line-height: 1.4;
+
+@font-face {
+  font-display: swap;
+  font-family: "Onest";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/onest-v6-cyrillic_latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Onest";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/onest-v6-cyrillic_latin-700.woff2") format("woff2");
+}

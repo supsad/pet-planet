@@ -1,0 +1,109 @@
+@use "../variables" as *;
+@use "../media" as *;
+
+.footer {
+  padding: 80px 0 32px;
+  background-color: $green;
+  background-image: url("/img/paw.svg");
+  background-repeat: no-repeat;
+  color: $light;
+  background-position: left 41vw bottom -75px;
+  background-size: 375px;
+
+  @include laptop {
+    padding-top: 50px;
+    background-size: 311px;
+  }
+
+  @include tablet {
+    padding-top: 40px;
+    background-size: 215px;
+    background-position: right 46px bottom -45px;
+  }
+
+  @include mobile {
+    padding: 30px 0 24px;
+    background-size: 144px;
+    background-position: right -30px bottom -30px;
+  }
+
+  &__container {
+    display: grid;
+    gap: 50px;
+    grid-template-areas:
+      "logo contacts"
+      "info contacts";
+
+    @include tablet {
+      gap: 82px 30px;
+    }
+
+    @include mobile {
+      gap: 0;
+      grid-template-areas:
+        "logo"
+        "contacts"
+        "info";
+    }
+  }
+
+  &__logo {
+    grid-area: logo;
+    width: 331px;
+
+    @include tablet {
+      width: 200px;
+    }
+
+    @include mobile {
+      margin-bottom: 32px;
+    }
+  }
+
+  &__info {
+    grid-area: info;
+    font-size: 16px;
+
+    @media moblie {
+      font-size: 12px;
+    }
+  }
+
+  &__copyright {
+    margin-bottom: 16px;
+  }
+
+  &__text {
+    margin-bottom: 3px;
+  }
+
+  &__item {
+    margin-bottom: 3px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__contacts {
+    grid-area: contacts;
+    justify-self: end;
+    font-style: normal;
+
+    @include mobile {
+      margin-bottom: 66px;
+      justify-self: start;
+    }
+  }
+
+  &__email {
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  &__social-list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

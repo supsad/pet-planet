@@ -37,11 +37,11 @@
   </section>
 
   <section class="store">
-    <div class="container">
-      <h2 class="store__header">Каталог</h2>
-      <header>
+    <div class="container store__container">
+      <h2 class="store__title">Каталог</h2>
+      <header class="store__header">
         <ul class="store__categories">
-          <li class="store__categories-item">
+          <li class="store__categories-item store__categories-item_current">
             <a class="store__categories-button" href="#">Домики</a>
           </li>
           <li class="store__categories-item">
@@ -55,8 +55,7 @@
           </li>
         </ul>
 
-        <a class="store__categories-cart" href="#">
-          <span>Корзина</span>
+        <a class="store__categories-cart" href="#" aria-label="Корзина покупок">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="18" cy="14" r="2" fill="#E47537"/>
             <circle cx="10" cy="14" r="2" fill="#E47537"/>
@@ -66,10 +65,10 @@
       </header>
 
       <ul class="store__catalog">
-        <li class="product catalog__item">
+        <li class="product store__catalog-item">
           <img class="product__picture" src="/img/products/scandinavian-house.png"
                srcset="/img/products/scandinavian-house@2x.png 2x" alt="Скандинавский домик для собаки">
-          <h3 class="product__header">Скандинавский домик для собаки</h3>
+          <h3 class="product__title">Скандинавский домик для собаки</h3>
           <p class="product__price">
             5400&nbsp;
             <span>&#8381;</span>
@@ -77,8 +76,9 @@
           <a class="product__buy-button" href="#">Заказать</a>
         </li>
         <li class="product catalog__item">
-          <img class="product__picture" src="" alt="Домик со съемной крышей">
-          <h3 class="product__header">Домик со съемной крышей</h3>
+          <img class="product__picture" src="/img/products/removable-roof-house.png"
+               srcset="/img/products/removable-roof-house@2x.png 2x" alt="Домик со съемной крышей">
+          <h3 class="product__title">Домик со съемной крышей</h3>
           <p class="product__price">
             7200&nbsp;
             <span>&#8381;</span>
@@ -88,7 +88,7 @@
         <li class="product catalog__item">
           <img class="product__picture" src="/img/products/house-with-scratching-post.png"
                srcset="/img/products/house-with-scratching-post@2x.png 2x" alt="Домик для кошки с когтеточкой">
-          <h3 class="product__header">Домик для кошки с когтеточкой</h3>
+          <h3 class="product__title">Домик для кошки с когтеточкой</h3>
           <p class="product__price">
             3800&nbsp;
             <span>&#8381;</span>
@@ -98,7 +98,7 @@
         <li class="product catalog__item">
           <img class="product__picture" src="/img/products/house-ball.png"
                srcset="/img/products/house-ball@2x.png 2x" alt="Домик шар для питомцев">
-          <h3 class="product__header">Домик шар для питомцев</h3>
+          <h3 class="product__title">Домик шар для питомцев</h3>
           <p class="product__price">
             4500&nbsp;
             <span>&#8381;</span>
@@ -108,7 +108,7 @@
         <li class="product catalog__item">
           <img class="product__picture" src="/img/products/dog-house.png"
                srcset="/img/products/dog-house@2x.png 2x" alt="Домик для собак">
-          <h3 class="product__header">Домик для собак</h3>
+          <h3 class="product__title">Домик для собак</h3>
           <p class="product__price">
             6200&nbsp;
             <span>&#8381;</span>
@@ -118,7 +118,7 @@
         <li class="product catalog__item">
           <img class="product__picture" src="/img/products/house-cone.png"
                srcset="/img/products/house-cone@2x.png 2x" alt="Домик-конус для питомцев">
-          <h3 class="product__header">Домик-конус для питомцев</h3>
+          <h3 class="product__title">Домик-конус для питомцев</h3>
           <p class="product__price">
             5700&nbsp;
             <span>&#8381;</span>

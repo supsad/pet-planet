@@ -3,7 +3,6 @@
 
 .button {
   display: block;
-  min-width: 209px;
   padding: 16px 24px;
 
   text-align: center;
@@ -19,6 +18,7 @@
 
   &_arrow {
     display: flex;
+    min-width: 209px;
     gap: 4px;
     align-items: center;
     justify-content: center;

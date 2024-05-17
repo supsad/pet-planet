@@ -4,29 +4,23 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 0 16px 16px;
-  width: 100%;
-  max-width: 420px;
-  min-height: 499px;
 
   text-align: center;
-  background-color: $white;
+  background-color: #fff;
   border-radius: 24px;
 
-  @include tablet {
-    min-height: 460px;
-  }
-
-  @include mobile {
-    min-height: 400px;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
   }
 
   &__picture-container {
     width: 100%;
     padding: 16px 0;
     margin-bottom: 16px;
-    overflow: hidden;
   }
 
   &__picture {
@@ -35,19 +29,10 @@
 
   &__title {
     flex-grow: 1;
-    align-self: center;
     max-width: 370px;
     margin: 0 auto 4px;
     font-weight: 700;
     font-size: 28px;
-
-    @include tablet {
-      font-size: 24px;
-    }
-
-    @include mobile {
-      font-size: 20px;
-    }
   }
 
   &__price {

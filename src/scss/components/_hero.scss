@@ -77,10 +77,6 @@
     max-width: 440px;
     margin-bottom: 60px;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     @include bigscreen {
       max-width: 540px;
     }

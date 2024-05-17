@@ -6,8 +6,9 @@ const API_URL = 'https://cyber-dark-scar.glitch.me';
 const categoryButtons = document.querySelectorAll('.store__categories-item');
 const productList = document.querySelector('.store__catalog');
 const cartButton = document.querySelector('.store__cart-button');
+const cartCount = cartButton.querySelector('.store__cart-count');
 const modalOverlay = document.querySelector('.modal-overlay');
-const modalCloseButton = document.querySelector('.modal-overlay__close-button');
+const cartItemsList = document.querySelector('.modal-cart__shopping-list');
 
 const changeCategories = (currentCategory) => {
   let activeTarget = currentCategory;
@@ -104,23 +105,102 @@ const openCart = (ev) => {
   }
 };
 
-const cartOpenHandler = () => {
+const renderCartItems = () => {
+  cartItemsList.textContent = '';
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+
+  cartItems.forEach(item => {
+    const listItem = document.createElement('li');
+    listItem.textContent = item;
+    cartItemsList.append(listItem);
+  });
+};
+
+const openCartHandler = () => {
   cartButton.addEventListener('click', (ev) => {
     ev.preventDefault();
 
     modalOverlay.classList.add('modal-overlay_show');
     modalOverlay.addEventListener('click', openCart);
+    renderCartItems();
   });
 };
 
+const isStorageAvailable = (type) => {
+  let storage;
+  try {
+    storage = window[type];
+
+    const x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+
+    return true;
+  } catch (err) {
+    return (
+      err instanceof DOMException &&
+      // * everything except Firefox
+      (err.code === 22 ||
+        // Firefox
+        err.code === 1014 ||
+        // test name field too, because code might not be present
+        // everything except Firefox
+        err.name === 'QuotaExceededError' ||
+        // Firefox
+        err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
+      storage.length !== 0
+    );
+  }
+};
+
+const updateCartCount = () => {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  cartCount.textContent = cartItems.length;
+};
+
+const addToCart = (productName) => {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  cartItems.push(productName);
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  updateCartCount();
+};
+
+const getProductName = () => {
+  productList.addEventListener('click', ({target}) => {
+    if (!target.closest('.product-card__buy-button')) {}
+
+    const productCard = target.closest('.product-card');
+    const productName = productCard.querySelector('.product-card__title').textContent;
+
+    addToCart(productName.trim());
+  })
+};
+
+const localStorageHandler = () => {
+  if (!isStorageAvailable('sessionStorage')) {
+    throw new Error('Ваш браузер не поддерживает локальное хранилище!');
+  }
+
+  updateCartCount();
+  getProductName();
+};
+
 const init = () => {
-  cartOpenHandler();
+  openCartHandler();
 
   let currentCategory = getCurrentCategory();
   currentCategory ??= setDefaultCategory(currentCategory);
 
   void fetchProductByCategory(`${currentCategory.firstElementChild.dataset.category}`);
   changeCategories(currentCategory);
+
+  try {
+    localStorageHandler();
+  } catch (e) {
+    // * cart link and error
+  }
 };
 
 document.addEventListener('DOMContentLoaded', init);

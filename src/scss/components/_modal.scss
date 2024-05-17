@@ -1,6 +1,29 @@
 @use "../variables" as *;
 @use "../media" as *;
 
+.modal-overlay {
+  position: fixed;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(black, 0.7);
+  inset: 0;
+  z-index: 999;
+
+  &_show {
+    display: flex;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    font-size: 52px;
+    color: $white;
+  }
+}
+
 .modal-cart {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -9,10 +32,7 @@
   border-radius: 24px;
   background-color: $white;
   box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.15);
-
-  &_close {
-    display: none;
-  }
+  overflow: hidden;
 
   &__image-container {
     background-image: image-set(

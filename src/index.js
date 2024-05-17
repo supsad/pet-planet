@@ -4,8 +4,12 @@
 const API_URL = 'https://cyber-dark-scar.glitch.me';
 
 const categoryButtons = document.querySelectorAll('.store__categories-item');
+const productList = document.querySelector('.store__catalog');
+const cartButton = document.querySelector('.store__cart-button');
+const modalOverlay = document.querySelector('.modal-overlay');
+const modalCloseButton = document.querySelector('.modal-overlay__close-button');
 
-const renderCategories = (currentCategory) => {
+const changeCategories = (currentCategory) => {
   let activeTarget = currentCategory;
 
   categoryButtons.forEach(category => {
@@ -18,13 +22,10 @@ const renderCategories = (currentCategory) => {
 
       activeTarget = e.currentTarget;
       activeTarget.classList.add('store__categories-item_current');
-      void fetchProductByCategory(`${e.target.textContent}`);
+      void fetchProductByCategory(`${e.target.dataset.category}`);
     });
   });
 };
-
-
-const productList = document.querySelector('.store__catalog');
 
 const createProductCard = (product) => {
   const productCard = document.createElement('li');
@@ -76,20 +77,48 @@ const fetchProductByCategory = async (category) => {
   }
 };
 
-const isHasCurrentCategory = () => [...categoryButtons].some(el => {
-  return el.classList.contains('is-selected');
+const getCurrentCategory = () => [...categoryButtons].find(el => {
+  return el.classList.contains('store__categories-item_current');
 });
 
+const setDefaultCategory = (category) => {
+  category = categoryButtons[0];
+
+  if (!category.classList.contains('store__categories-item_current')) {
+    category.classList.add('store__categories-item_current');
+  }
+
+  return category;
+};
+
+const openCart = (e) => {
+  e.preventDefault();
+
+  modalOverlay.classList.add('modal-overlay_show');
+
+  if (e.target === e.currentTarget || e.target.closest('.modal-overlay__close-button')) {
+    modalOverlay.classList.remove('modal-overlay_show');
+    modalOverlay.removeEventListener('click', openCart);
+  }
+};
+
+const cartHandler = () => {
+  cartButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    modalOverlay.classList.add('modal-overlay_show');
+    modalOverlay.addEventListener('click', openCart);
+  });
+};
 
 const init = () => {
-  let currentCategory;
+  cartHandler();
 
-  !isHasCurrentCategory
-    ? currentCategory = document.querySelector('.store__categories-item_current')
-    : currentCategory = categoryButtons[0];
+  let currentCategory = getCurrentCategory();
+  currentCategory ??= setDefaultCategory(currentCategory);
 
-  void fetchProductByCategory(`${currentCategory.firstElementChild.textContent}`);
-  renderCategories(currentCategory);
+  void fetchProductByCategory(`${currentCategory.firstElementChild.dataset.category}`);
+  changeCategories(currentCategory);
 };
 
 document.addEventListener('DOMContentLoaded', init);

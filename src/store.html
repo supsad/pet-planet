@@ -43,17 +43,17 @@
       <h2 class="store__title">Каталог</h2>
       <nav class="store__nav">
         <ul class="store__categories">
+          <li class="store__categories-item">
+            <a class="store__categories-button" href="#" data-category="Домики">Домики</a>
+          </li>
+          <li class="store__categories-item">
+            <a class="store__categories-button" href="#" data-category="Лежанки">Лежанки</a>
+          </li>
           <li class="store__categories-item store__categories-item_current">
-            <a class="store__categories-button" href="#">Домики</a>
+            <a class="store__categories-button" href="#" data-category="Игрушки">Игрушки</a>
           </li>
           <li class="store__categories-item">
-            <a class="store__categories-button" href="#">Лежанки</a>
-          </li>
-          <li class="store__categories-item">
-            <a class="store__categories-button" href="#">Игрушки</a>
-          </li>
-          <li class="store__categories-item">
-            <a class="store__categories-button" href="#">Корма</a>
+            <a class="store__categories-button" href="#" data-category="Корма">Корма</a>
           </li>
         </ul>
 
@@ -137,86 +137,90 @@
   </div>
 </footer>
 
-<section class="modal-cart ">
-  <div class="modal-cart__image-container"></div>
-  <div class="modal-cart__content">
-    <h2 class="modal-cart__title">Корзина</h2>
-    <ul class="modal-cart__shopping-list">
-      <li class="cart-item modal-cart__shopping-item">
-        <h3 class="cart-item__title">
-          <a href="#">Домик-конус для питомцев</a>
-        </h3>
-        <div class="cart-item__image-container">
-          <img class="cart-item__image" src="/img/products/house-cone.png"
-               width="264" height="229" alt="Домик-конус для питомцев">
-        </div>
-        <div class="cart-item__quantity-container">
-          <input class="cart-item__quantity-button visually-hidden"
-                 id="cart-item-reduce-1" type="button" value="-">
-          <label class="cart-item__quantity-label" for="cart-item-reduce-1">-</label>
-          <span class="cart-item__quantity-amount">1</span>
-          <input class="cart-item__quantity-button visually-hidden"
-                 id="cart-item-increase-1" type="button" value="+">
-          <label class="cart-item__quantity-label" for="cart-item-increase-1">+</label>
-        </div>
-        <p class="cart-item__price">
-          5700&nbsp;
-          <span>&#8381;</span>
-        </p>
-      </li>
-      <li class="cart-item modal-cart__shopping-item">
-        <h3 class="cart-item__title">
-          <a href="#">Домик со съемной крышей</a>
-        </h3>
-        <div class="cart-item__image-container">
-          <img class="cart-item__image" src="./img/products/removable-roof-house.png"
-               width="264" height="229" alt="Домик со съемной крышей">
-        </div>
-        <div class="cart-item__quantity-container">
-          <input class="cart-item__quantity-button visually-hidden"
-                 id="cart-item-reduce-2" type="button" value="-">
-          <label class="cart-item__quantity-label" for="cart-item-reduce-2">-</label>
-          <span class="cart-item__quantity-amount">1</span>
-          <input class="cart-item__quantity-button visually-hidden"
-                 id="cart-item-increase-2" type="button" value="+">
-          <label class="cart-item__quantity-label" for="cart-item-increase-2">+</label>
-        </div>
-        <p class="cart-item__price">
-          7200&nbsp;
-          <span>&#8381;</span>
-        </p>
-      </li>
-    </ul>
-    <form class="modal-cart__pickup-form" action="" method="post">
-      <fieldset class="modal-cart__pickup-store">
-        <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
-        <ul class="modal-cart__store-list">
-          <li class="modal-cart__store-item">
-            <input class="modal-cart__store-radio visually-hidden" type="radio" value="adamavaya-45"
-                   name="address" id="st-adamavaya">
-            <label class="modal-cart__store-title" for="st-adamavaya">ул. Адамавая 45/1</label>
-          </li>
-          <li class="modal-cart__store-item">
-            <input class="modal-cart__store-radio visually-hidden" type="radio" value="vishnevaya-74"
-                   name="address" id="st-vishnevaya" checked>
-            <label class="modal-cart__store-title" for="st-vishnevaya">ул. Вишневая 74</label>
-          </li>
-          <li class="modal-cart__store-item">
-            <input class="modal-cart__store-radio visually-hidden" type="radio" value="chechova-106"
-                   name="address" id="st-chechova">
-            <label class="modal-cart__store-title" for="st-chechova">ул. Чехова 106/28</label>
-          </li>
-        </ul>
-      </fieldset>
+<section class="modal-overlay">
+  <div class="modal-cart">
+    <div class="modal-cart__image-container"></div>
+    <div class="modal-cart__content">
+      <h2 class="modal-cart__title">Корзина</h2>
+      <ul class="modal-cart__shopping-list">
+        <li class="cart-item modal-cart__shopping-item">
+          <h3 class="cart-item__title">
+            <a href="#">Домик-конус для питомцев</a>
+          </h3>
+          <div class="cart-item__image-container">
+            <img class="cart-item__image" src="/img/products/house-cone.png"
+                 width="264" height="229" alt="Домик-конус для питомцев">
+          </div>
+          <div class="cart-item__quantity-container">
+            <input class="cart-item__quantity-button visually-hidden"
+                   id="cart-item-reduce-1" type="button" value="-">
+            <label class="cart-item__quantity-label" for="cart-item-reduce-1">-</label>
+            <span class="cart-item__quantity-amount">1</span>
+            <input class="cart-item__quantity-button visually-hidden"
+                   id="cart-item-increase-1" type="button" value="+">
+            <label class="cart-item__quantity-label" for="cart-item-increase-1">+</label>
+          </div>
+          <p class="cart-item__price">
+            5700&nbsp;
+            <span>&#8381;</span>
+          </p>
+        </li>
+        <li class="cart-item modal-cart__shopping-item">
+          <h3 class="cart-item__title">
+            <a href="#">Домик со съемной крышей</a>
+          </h3>
+          <div class="cart-item__image-container">
+            <img class="cart-item__image" src="./img/products/removable-roof-house.png"
+                 width="264" height="229" alt="Домик со съемной крышей">
+          </div>
+          <div class="cart-item__quantity-container">
+            <input class="cart-item__quantity-button visually-hidden"
+                   id="cart-item-reduce-2" type="button" value="-">
+            <label class="cart-item__quantity-label" for="cart-item-reduce-2">-</label>
+            <span class="cart-item__quantity-amount">1</span>
+            <input class="cart-item__quantity-button visually-hidden"
+                   id="cart-item-increase-2" type="button" value="+">
+            <label class="cart-item__quantity-label" for="cart-item-increase-2">+</label>
+          </div>
+          <p class="cart-item__price">
+            7200&nbsp;
+            <span>&#8381;</span>
+          </p>
+        </li>
+      </ul>
+      <form class="modal-cart__pickup-form" action="" method="post">
+        <fieldset class="modal-cart__pickup-store">
+          <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
+          <ul class="modal-cart__store-list">
+            <li class="modal-cart__store-item">
+              <input class="modal-cart__store-radio visually-hidden" type="radio" value="adamavaya-45"
+                     name="address" id="st-adamavaya">
+              <label class="modal-cart__store-title" for="st-adamavaya">ул. Адамавая 45/1</label>
+            </li>
+            <li class="modal-cart__store-item">
+              <input class="modal-cart__store-radio visually-hidden" type="radio" value="vishnevaya-74"
+                     name="address" id="st-vishnevaya" checked>
+              <label class="modal-cart__store-title" for="st-vishnevaya">ул. Вишневая 74</label>
+            </li>
+            <li class="modal-cart__store-item">
+              <input class="modal-cart__store-radio visually-hidden" type="radio" value="chechova-106"
+                     name="address" id="st-chechova">
+              <label class="modal-cart__store-title" for="st-chechova">ул. Чехова 106/28</label>
+            </li>
+          </ul>
+        </fieldset>
 
-      <div class="modal-cart__submit-container">
-        <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
-        <p class="modal-cart__total-price">
-          12900&nbsp;
-          <span>&#8381;</span>
-        </p>
-      </div>
-    </form>
+        <div class="modal-cart__submit-container">
+          <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
+          <p class="modal-cart__total-price">
+            12900&nbsp;
+            <span>&#8381;</span>
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <button class="modal-overlay__close-button" type="button">&times;</button>
   </div>
 </section>
 

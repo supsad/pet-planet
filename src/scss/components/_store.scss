@@ -80,17 +80,14 @@
 
   &__cart-count {
     position: relative;
-    top: -5px;
+    top: 2px;
     z-index: 2;
 
     font-size: 12px;
     font-weight: 700;
     line-height: 1;
     color: $light;
-
-    @include desktop {
-      top: 0;
-    }
+    vertical-align: middle;
   }
 
   &__cart-icon {

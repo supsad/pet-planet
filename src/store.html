@@ -57,19 +57,117 @@
           </li>
         </ul>
 
-        <button class="store__cart-button" type="button" aria-label="Корзина покупок">
-          <span class="store__cart-count">0</span>
-          <svg class="store__cart-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a class="store__categories-cart" href="#" aria-label="Корзина покупок">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="18" cy="14" r="2" fill="#E47537"/>
             <circle cx="10" cy="14" r="2" fill="#E47537"/>
             <path
               d="M23.2867 10.4534C22.505 9.59003 21.3267 9.08836 19.6934 8.91336V8.02669C19.6934 6.42836 19.0167 4.88836 17.8267 3.81503C16.625 2.71836 15.0617 2.20503 13.44 2.35669C10.6517 2.62503 8.3067 5.32003 8.3067 8.23669V8.91336C6.67336 9.08836 5.49503 9.59003 4.71336 10.4534C3.5817 11.7134 3.6167 13.3934 3.74503 14.56L4.5617 21.0584C4.8067 23.3334 5.72836 25.6667 10.745 25.6667H17.255C22.2717 25.6667 23.1934 23.3334 23.4384 21.07L24.255 14.5484C24.3834 13.3934 24.4067 11.7134 23.2867 10.4534ZM13.6034 3.97836C14.77 3.87336 15.8784 4.23503 16.7417 5.01669C17.5934 5.78669 18.0717 6.88336 18.0717 8.02669V8.84336H9.92836V8.23669C9.92836 6.16003 11.6434 4.16503 13.6034 3.97836ZM9.82336 15.3417H9.8117C9.17003 15.3417 8.64503 14.8167 8.64503 14.175C8.64503 13.5334 9.17003 13.0084 9.8117 13.0084C10.465 13.0084 10.99 13.5334 10.99 14.175C10.99 14.8167 10.465 15.3417 9.82336 15.3417ZM17.99 15.3417H17.9784C17.3367 15.3417 16.8117 14.8167 16.8117 14.175C16.8117 13.5334 17.3367 13.0084 17.9784 13.0084C18.6317 13.0084 19.1567 13.5334 19.1567 14.175C19.1567 14.8167 18.6317 15.3417 17.99 15.3417Z"
               fill="#E47537"/>
           </svg>
-        </button>
+        </a>
       </header>
 
-      <ul class="store__catalog"></ul>
+      <ul class="store__catalog">
+        <li class="product-card store__catalog-item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/scandinavian-house.png"
+                   srcset="/img/products/scandinavian-house@2x.png 2x" alt="Скандинавский домик для собаки">
+            </div>
+            <h3 class="product-card__title">
+              Скандинавский домик<br>
+              для собаки
+            </h3>
+            <p class="product-card__price">
+              5400&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+        <li class="product-card catalog__item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/removable-roof-house.png"
+                   srcset="/img/products/removable-roof-house@2x.png 2x" alt="Домик со съемной крышей">
+            </div>
+            <h3 class="product-card__title">
+              Домик со съемной<br>
+              крышей</h3>
+            <p class="product-card__price">
+              7200&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+        <li class="product-card catalog__item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/house-with-scratching-post.png"
+                   srcset="/img/products/house-with-scratching-post@2x.png 2x" alt="Домик для кошки с когтеточкой">
+            </div>
+            <h3 class="product-card__title">
+              Домик для кошки<br>
+              с когтеточкой
+            </h3>
+            <p class="product-card__price">
+              3800&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+        <li class="product-card catalog__item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/house-ball.png"
+                   srcset="/img/products/house-ball@2x.png 2x" alt="Домик шар для питомцев">
+            </div>
+            <h3 class="product-card__title">
+              Домик шар<br>
+              для питомцев
+            </h3>
+            <p class="product-card__price">
+              4500&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+        <li class="product-card catalog__item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/dog-house.png"
+                   srcset="/img/products/dog-house@2x.png 2x" alt="Домик для собак">
+            </div>
+            <h3 class="product-card__title">Домик для собак</h3>
+            <p class="product-card__price">
+              6200&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+        <li class="product-card catalog__item">
+          <div class="product-card__content">
+            <div class="product-card__picture-container">
+              <img class="product-card__picture" src="/img/products/house-cone.png"
+                   srcset="/img/products/house-cone@2x.png 2x" alt="Домик-конус для питомцев">
+            </div>
+            <h3 class="product-card__title">
+              Домик-конус<br>
+              для питомцев
+            </h3>
+            <p class="product-card__price">
+              5700&nbsp;
+              <span>&#8381;</span>
+            </p>
+            <a class="button button_purple product-card__buy-button" href="#">Заказать</a>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 </main>
@@ -219,8 +317,6 @@
     </form>
   </div>
 </section>
-
-<script src="index.js"></script>
 </body>
 
 </html>

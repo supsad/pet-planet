@@ -94,4 +94,8 @@
       grid-template-columns: 1fr;
     }
   }
+
+  &__catalog-item {
+    display: flex;
+  }
 }

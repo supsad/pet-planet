@@ -18,7 +18,7 @@
     color: $green;
   }
 
-  &__header {
+  &__nav {
     order: -1;
     display: flex;
     justify-content: space-between;
@@ -71,6 +71,11 @@
     display: block;
     width: 28px;
     height: 28px;
+
+    @include bigscreen {
+      width: 32px;
+      height: 32px;
+    }
   }
 
   &__cart-count {
@@ -90,6 +95,8 @@
 
   &__cart-icon {
     position: absolute;
+    width: 100%;
+    height: 100%;
     inset: 0;
     z-index: 1;
   }

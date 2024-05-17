@@ -3,11 +3,32 @@
 // * API /api/products/category
 const API_URL = 'https://cyber-dark-scar.glitch.me';
 
+const categoryButtons = document.querySelectorAll('.store__categories-item');
+
+const renderCategories = (currentCategory) => {
+  let activeTarget = currentCategory;
+
+  categoryButtons.forEach(category => {
+    category.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      if (activeTarget !== e.currentTarget) {
+        activeTarget.classList.remove('store__categories-item_current');
+      }
+
+      activeTarget = e.currentTarget;
+      activeTarget.classList.add('store__categories-item_current');
+      void fetchProductByCategory(`${e.target.textContent}`);
+    });
+  });
+};
+
+
 const productList = document.querySelector('.store__catalog');
 
 const createProductCard = (product) => {
   const productCard = document.createElement('li');
-  productCard.classList.add('product-card', 'catalog__item');
+  productCard.classList.add('store__catalog-item');
 
   productCard.innerHTML = `
   <article class="product-card">
@@ -55,4 +76,20 @@ const fetchProductByCategory = async (category) => {
   }
 };
 
-void fetchProductByCategory('Домики');
+const isHasCurrentCategory = () => [...categoryButtons].some(el => {
+  return el.classList.contains('is-selected');
+});
+
+
+const init = () => {
+  let currentCategory;
+
+  !isHasCurrentCategory
+    ? currentCategory = document.querySelector('.store__categories-item_current')
+    : currentCategory = categoryButtons[0];
+
+  void fetchProductByCategory(`${currentCategory.firstElementChild.textContent}`);
+  renderCategories(currentCategory);
+};
+
+document.addEventListener('DOMContentLoaded', init);

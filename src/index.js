@@ -28,7 +28,7 @@ const changeCategories = (currentCategory) => {
   });
 };
 
-const createProductCard = ({name, price, photoUrl}) => {
+const createProductCard = ({name, price, photoUrl, id}) => {
   const productCard = document.createElement('li');
   productCard.classList.add('store__catalog-item');
 
@@ -45,7 +45,7 @@ const createProductCard = ({name, price, photoUrl}) => {
       ${price}&nbsp;
       <span>&#8381;</span>
     </p>
-    <button class="button button_purple product-card__buy-button" type="button">Заказать</button>
+    <button class="button button_purple product-card__buy-button" data-id="${id}" type="button">Заказать</button>
   </article>
   `;
 
@@ -117,7 +117,7 @@ const openCart = (ev) => {
 };
 
 const renderCartItems = () => {
-  // cartItemsList.textContent = '';
+  cartItemsList.textContent = '';
   const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
 
   cartItems.forEach(item => {
@@ -182,12 +182,12 @@ const addToCart = (productName) => {
 
 const getProductName = () => {
   productList.addEventListener('click', ({target}) => {
-    if (!target.closest('.product-card__buy-button')) {}
+    if (!target.closest('.product-card__buy-button')) {
+      return;
+    }
 
-    const productCard = target.closest('.product-card');
-    const productName = productCard.querySelector('.product-card__title').textContent;
-
-    addToCart(productName.trim());
+    const productId = parseInt(target.dataset.id, 10);
+    addToCart(productId);
   })
 };
 

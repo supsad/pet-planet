@@ -68,12 +68,9 @@ const checkData = (data) => {
 const fetchProductByCategory = async (category) => {
   try {
     const response = await fetch(`${API_URL}/api/products/category/${category}`);
-
     checkData(response);
 
     const products = await response.json();
-    console.log('products:', products);
-
     renderProducts(products);
   } catch (e) {
     console.error(e);
@@ -94,19 +91,33 @@ const setDefaultCategory = (category) => {
   return category;
 };
 
+const hiddenPageScroll = () => {
+  document.body.style.top = `-${window.scrollY}px`;
+  document.body.style.width = `100%`;
+  document.body.style.position = 'fixed';
+};
+
+const revertPageScroll = () => {
+  const scrollY = document.body.style.top;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  document.body.style.width = '';
+};
+
 const openCart = (ev) => {
   ev.preventDefault();
 
-  modalOverlay.classList.add('modal-overlay_show');
-
   if (ev.target === ev.currentTarget || ev.target.closest('.modal-overlay__close-button')) {
+    revertPageScroll();
+
     modalOverlay.classList.remove('modal-overlay_show');
     modalOverlay.removeEventListener('click', openCart);
   }
 };
 
 const renderCartItems = () => {
-  cartItemsList.textContent = '';
+  // cartItemsList.textContent = '';
   const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
 
   cartItems.forEach(item => {
@@ -121,6 +132,8 @@ const openCartHandler = () => {
     ev.preventDefault();
 
     modalOverlay.classList.add('modal-overlay_show');
+    hiddenPageScroll();
+
     modalOverlay.addEventListener('click', openCart);
     renderCartItems();
   });
@@ -178,13 +191,12 @@ const getProductName = () => {
   })
 };
 
-const localStorageHandler = () => {
+const localStorageHandler = (callbackFn) => {
   if (!isStorageAvailable('sessionStorage')) {
     throw new Error('Ваш браузер не поддерживает локальное хранилище!');
   }
 
-  updateCartCount();
-  getProductName();
+  callbackFn();
 };
 
 const init = () => {
@@ -197,7 +209,10 @@ const init = () => {
   changeCategories(currentCategory);
 
   try {
-    localStorageHandler();
+    localStorageHandler(() => {
+      updateCartCount();
+      getProductName();
+    });
   } catch (e) {
     // * cart link and error
   }

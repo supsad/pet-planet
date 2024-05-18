@@ -139,7 +139,6 @@
 
 <section class="modal-overlay">
   <div class="modal-cart">
-    <div class="modal-cart__image-container"></div>
     <div class="modal-cart__content">
       <h2 class="modal-cart__title">Корзина</h2>
       <ul class="modal-cart__shopping-list">
@@ -152,13 +151,11 @@
                  width="264" height="229" alt="Домик-конус для питомцев">
           </div>
           <div class="cart-item__quantity-container">
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-reduce-1" type="button" value="-">
-            <label class="cart-item__quantity-label" for="cart-item-reduce-1">-</label>
+            <button class="counter-button counter-button_green cart-item__quantity-button"
+                    type="button" value="decrease">-</button>
             <span class="cart-item__quantity-amount">1</span>
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-increase-1" type="button" value="+">
-            <label class="cart-item__quantity-label" for="cart-item-increase-1">+</label>
+            <button class="counter-button counter-button_green cart-item__quantity-button"
+                    type="button" value="increase">+</button>
           </div>
           <p class="cart-item__price">
             5700&nbsp;
@@ -174,13 +171,11 @@
                  width="264" height="229" alt="Домик со съемной крышей">
           </div>
           <div class="cart-item__quantity-container">
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-reduce-2" type="button" value="-">
-            <label class="cart-item__quantity-label" for="cart-item-reduce-2">-</label>
+            <button class="counter-button counter-button_green cart-item__quantity-button"
+                    type="button" value="decrease">-</button>
             <span class="cart-item__quantity-amount">1</span>
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-increase-2" type="button" value="+">
-            <label class="cart-item__quantity-label" for="cart-item-increase-2">+</label>
+            <button class="counter-button counter-button_green cart-item__quantity-button"
+                    type="button" value="increase">+</button>
           </div>
           <p class="cart-item__price">
             7200&nbsp;
@@ -193,19 +188,22 @@
           <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
           <ul class="modal-cart__store-list">
             <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="adamavaya-45"
-                     name="address" id="st-adamavaya">
-              <label class="modal-cart__store-title" for="st-adamavaya">ул. Адамавая 45/1</label>
+              <label class="radio modal-cart__store-radio" for="st-adamavaya">ул. Адамавая 45/1
+                <input class="radio__input" type="radio" value="adamavaya-45"
+                       name="delivery-address" id="st-adamavaya">
+              </label>
             </li>
             <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="vishnevaya-74"
-                     name="address" id="st-vishnevaya" checked>
-              <label class="modal-cart__store-title" for="st-vishnevaya">ул. Вишневая 74</label>
+              <label class="radio modal-cart__store-radio" for="st-vishnevaya">ул. Вишневая 74
+                <input class="radio__input" type="radio" value="vishnevaya-74"
+                       name="delivery-address" id="st-vishnevaya" checked>
+              </label>
             </li>
             <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="chechova-106"
-                     name="address" id="st-chechova">
-              <label class="modal-cart__store-title" for="st-chechova">ул. Чехова 106/28</label>
+              <label class="radio modal-cart__store-radio" for="st-chechova">ул. Чехова 106/28
+                <input class="radio__input" type="radio" value="chechova-106"
+                       name="delivery-address" id="st-chechova">
+              </label>
             </li>
           </ul>
         </fieldset>

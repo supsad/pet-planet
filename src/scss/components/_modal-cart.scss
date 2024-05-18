@@ -3,15 +3,19 @@
 
 .modal-cart {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   width: 676px;
+  min-height: 459px;
 
   border-radius: 24px;
   background-color: $white;
   box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.15);
   overflow: hidden;
 
-  &__image-container {
+  &::before {
+    content: "";
+    display: block;
+    width: 100%;
     background-image: image-set(
         url("/img/bg-dog-cart.jpg") 1x,
         url("/img/bg-dog-cart@2x.jpg") 2x
@@ -19,11 +23,36 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+
+    @include mobile {
+      grid-row: 1 / 2;
+    }
+  }
+
+  @include bigscreen {
+    width: 1000px;
+    min-height: 600px;
+  }
+
+  @include tablet {
+    max-width: 550px;
+  }
+
+  @include mobile {
+    grid-template-rows: 150px 1fr;
+    grid-template-columns: minmax(300px, 450px);
   }
 
   &__content {
     grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
     padding: 24px;
+
+    @include mobile {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+    }
   }
 
   &__title {
@@ -34,7 +63,10 @@
   }
 
   &__shopping-list {
-    margin-bottom: 74px;
+    flex-grow: 1;
+    max-height: 500px;
+    margin-bottom: 30px;
+    overflow-y: auto;
   }
 
   &__pickup-form {
@@ -43,12 +75,13 @@
 
   &__pickup-store {
     padding: 0;
-    margin-bottom: 16px;
+    margin: 0 0 16px 0;
     border: none;
   }
 
   &__pickup-title {
     font-weight: 700;
+    margin-bottom: 4px;
   }
 
   &__store-item {
@@ -56,49 +89,10 @@
     justify-content: space-between;
   }
 
-  &__store-title {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    &::after {
-      content: "";
-      position: relative;
-      display: block;
-      width: 12px;
-      height: 12px;
-      border: 1px solid $green;
-
-      border-radius: 24px;
-      outline: 2px solid transparent;
-      cursor: pointer;
-      user-select: none;
-
-      transition-property: background-color, transform;
-      transition-duration: 0.2s, 0.05s;
-      transition-timing-function: ease-in-out;
-    }
-  }
-
   &__store-radio {
-    &:hover + .modal-cart__store-title::after {
-      border-color: #004e1e;
-    }
-
-    &:focus-visible + .modal-cart__store-title::after {
-      outline-color: $carrot;
-    }
-
-    &:active + .modal-cart__store-title::after {
-      background-color: $green;
-      border-color: $green;
-      transform: scale(0.9);
-    }
-
-    &:checked + .modal-cart__store-title::after {
-      background-color: $green;
-    }
+    flex-grow: 1;
+    display: block;
+    font-size: 16px;
   }
 
   &__submit-container {

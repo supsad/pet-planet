@@ -9,6 +9,8 @@ const cartButton = document.querySelector('.store__cart-button');
 const cartCount = cartButton.querySelector('.store__cart-count');
 const modalOverlay = document.querySelector('.modal-overlay');
 const cartItemsList = document.querySelector('.modal-cart__shopping-list');
+const cartTotalPriceElement = document.querySelector('.modal-cart__total-price');
+const cartForm = document.querySelector('.modal-cart__pickup-form');
 
 const changeCategories = (currentCategory) => {
   let activeTarget = currentCategory;
@@ -77,6 +79,18 @@ const fetchProductByCategory = async (category) => {
   }
 };
 
+const fetchCartItems = async (ids) => {
+  try {
+    const response = await fetch(`${API_URL}/api/products/list/${ids.join(', ')}`);
+    checkData(response);
+
+    return await response.json();
+  } catch (e) {
+    console.error(`Ошибка запроса товаров для корзины: ${e}`);
+    return [];
+  }
+};
+
 const getCurrentCategory = () => [...categoryButtons].find(el => {
   return el.classList.contains('store__categories-item_current');
 });
@@ -116,28 +130,75 @@ const openCart = (ev) => {
   }
 };
 
+const calculateTotalPrice = (cartItems, products) => {
+  return cartItems.reduce((acc, item) => {
+    const product = products.find(product => product.id === item.id);
+    return acc + product.price * item.count;
+  }, 0);
+};
+
 const renderCartItems = () => {
   cartItemsList.textContent = '';
-  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
 
-  cartItems.forEach(item => {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const products = JSON.parse(localStorage.getItem('cartProductDetails') || '[]');
+
+  products.forEach(({id, name, price, photoUrl}) => {
+    const cartItem = cartItems.find(item => item.id === id);
+
+    if (!cartItem) {
+      return;
+    }
+
     const listItem = document.createElement('li');
-    listItem.textContent = item;
+    listItem.classList.add('cart-item', 'modal-cart__shopping-item');
+    listItem.innerHTML = `
+     <h3 class="cart-item__title"><a href="#">${name}</a></h3>
+      <div class="cart-item__image-container">
+        <img class="cart-item__image" src="${API_URL}${photoUrl}"
+             width="264" height="229" alt="${name}">
+      </div>
+      <div class="cart-item__quantity-container">
+        <button class="counter-button counter-button_green cart-item__quantity-button"
+                type="button" value="decrease" data-id="${id}">-</button>
+        <span class="cart-item__quantity-amount">${cartItem.count}</span>
+        <button class="counter-button counter-button_green cart-item__quantity-button"
+                type="button" value="increase" data-id="${id}">+</button>
+      </div>
+      <p class="cart-item__price">${price * cartItem.count}&nbsp;<span>&#8381;</span></p>
+    `;
+
     cartItemsList.append(listItem);
   });
+
+  const totalPrice = calculateTotalPrice(cartItems, products);
+  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
 };
 
-const openCartHandler = () => {
-  cartButton.addEventListener('click', (ev) => {
-    ev.preventDefault();
+cartButton.addEventListener('click', async (ev) => {
+  ev.preventDefault();
 
-    modalOverlay.classList.add('modal-overlay_show');
-    hiddenPageScroll();
+  modalOverlay.classList.add('modal-overlay_show');
+  hiddenPageScroll();
 
-    modalOverlay.addEventListener('click', openCart);
-    renderCartItems();
-  });
-};
+  modalOverlay.addEventListener('click', openCart);
+
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const ids = cartItems.map(item => item.id);
+
+  if (!ids.length) {
+    cartItemsList.textContent = '';
+    
+    const listItem = document.createElement('li');
+    listItem.textContent = 'Пусто';
+    cartItemsList.append(listItem);
+    return;
+  }
+
+  const products = await fetchCartItems(ids);
+  localStorage.setItem('cartProductDetails', JSON.stringify(products));
+  renderCartItems();
+});
 
 const isStorageAvailable = (type) => {
   let storage;
@@ -168,14 +229,26 @@ const isStorageAvailable = (type) => {
   }
 };
 
+// * For the cart, the total number of products in it is made, and not by product name
 const updateCartCount = () => {
   const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-  cartCount.textContent = cartItems.length;
+  cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
 };
 
-const addToCart = (productName) => {
+const addToCart = (productId) => {
   const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-  cartItems.push(productName);
+
+  const existingItem = cartItems.find((item) => item.id === productId);
+
+  if (existingItem) {
+    existingItem.count += 1;
+  } else {
+    cartItems.push({
+      id: productId,
+      count: 1,
+    });
+  }
+
   localStorage.setItem('cartItems', JSON.stringify(cartItems));
   updateCartCount();
 };
@@ -186,7 +259,7 @@ const getProductName = () => {
       return;
     }
 
-    const productId = parseInt(target.dataset.id, 10);
+    const productId = target.dataset.id;
     addToCart(productId);
   })
 };
@@ -200,8 +273,6 @@ const localStorageHandler = (callbackFn) => {
 };
 
 const init = () => {
-  openCartHandler();
-
   let currentCategory = getCurrentCategory();
   currentCategory ??= setDefaultCategory(currentCategory);
 
@@ -214,7 +285,7 @@ const init = () => {
       getProductName();
     });
   } catch (e) {
-    // * cart link and error
+    // ! cart link and error
   }
 };
 

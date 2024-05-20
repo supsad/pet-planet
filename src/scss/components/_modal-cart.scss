@@ -49,10 +49,17 @@
     flex-direction: column;
     padding: 24px;
 
+    /* fixing scrollbar position */
+    padding-right: 0;
+
     @include mobile {
       grid-row: 2 / 3;
       grid-column: 1 / 2;
     }
+  }
+
+  &__container {
+    padding-right: 24px;
   }
 
   &__title {
@@ -67,6 +74,9 @@
     max-height: 500px;
     margin-bottom: 30px;
     overflow-y: auto;
+
+    /* fixing scrollbar position */
+    padding-right: 24px;
   }
 
   &__pickup-form {

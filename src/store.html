@@ -140,7 +140,9 @@
 <section class="modal-overlay">
   <div class="modal-cart">
     <div class="modal-cart__content">
-      <h2 class="modal-cart__title">Корзина</h2>
+      <div class="modal-cart__container">
+        <h2 class="modal-cart__title">Корзина</h2>
+      </div>
       <ul class="modal-cart__shopping-list">
         <li class="cart-item modal-cart__shopping-item">
           <h3 class="cart-item__title">
@@ -183,39 +185,41 @@
           </p>
         </li>
       </ul>
-      <form class="modal-cart__pickup-form" action="" method="post">
-        <fieldset class="modal-cart__pickup-store">
-          <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
-          <ul class="modal-cart__store-list">
-            <li class="modal-cart__store-item">
-              <label class="radio modal-cart__store-radio" for="st-adamavaya">ул. Адамавая 45/1
-                <input class="radio__input" type="radio" value="adamavaya-45"
-                       name="delivery-address" id="st-adamavaya">
-              </label>
-            </li>
-            <li class="modal-cart__store-item">
-              <label class="radio modal-cart__store-radio" for="st-vishnevaya">ул. Вишневая 74
-                <input class="radio__input" type="radio" value="vishnevaya-74"
-                       name="delivery-address" id="st-vishnevaya" checked>
-              </label>
-            </li>
-            <li class="modal-cart__store-item">
-              <label class="radio modal-cart__store-radio" for="st-chechova">ул. Чехова 106/28
-                <input class="radio__input" type="radio" value="chechova-106"
-                       name="delivery-address" id="st-chechova">
-              </label>
-            </li>
-          </ul>
-        </fieldset>
+      <div class="modal-cart__container">
+        <form class="modal-cart__pickup-form" action="" method="post">
+          <fieldset class="modal-cart__pickup-store">
+            <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
+            <ul class="modal-cart__store-list">
+              <li class="modal-cart__store-item">
+                <label class="radio modal-cart__store-radio" for="st-adamavaya">ул. Адамавая 45/1
+                  <input class="radio__input" type="radio" value="adamavaya-45"
+                         name="delivery-address" id="st-adamavaya">
+                </label>
+              </li>
+              <li class="modal-cart__store-item">
+                <label class="radio modal-cart__store-radio" for="st-vishnevaya">ул. Вишневая 74
+                  <input class="radio__input" type="radio" value="vishnevaya-74"
+                         name="delivery-address" id="st-vishnevaya" checked>
+                </label>
+              </li>
+              <li class="modal-cart__store-item">
+                <label class="radio modal-cart__store-radio" for="st-chechova">ул. Чехова 106/28
+                  <input class="radio__input" type="radio" value="chechova-106"
+                         name="delivery-address" id="st-chechova">
+                </label>
+              </li>
+            </ul>
+          </fieldset>
 
-        <div class="modal-cart__submit-container">
-          <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
-          <p class="modal-cart__total-price">
-            12900&nbsp;
-            <span>&#8381;</span>
-          </p>
-        </div>
-      </form>
+          <div class="modal-cart__submit-container">
+            <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
+            <p class="modal-cart__total-price">
+              12900&nbsp;
+              <span>&#8381;</span>
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
 
     <button class="modal-overlay__close-button" type="button">&times;</button>

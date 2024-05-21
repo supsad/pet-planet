@@ -33,6 +33,10 @@
   &__categories-item {
     color: $carrot;
 
+    &:hover {
+      color: $green;
+    }
+
     &_current {
       position: relative;
       color: $green;

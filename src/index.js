@@ -12,6 +12,8 @@ const cartItemsList = document.querySelector('.modal-cart__shopping-list');
 const cartTotalPriceElement = document.querySelector('.modal-cart__total-price');
 const cartForm = document.querySelector('.modal-cart__pickup-form');
 
+const getCartItems = () => JSON.parse(localStorage.getItem('cartItems') || '[]');
+
 const changeCategories = (currentCategory) => {
   let activeTarget = currentCategory;
 
@@ -127,6 +129,7 @@ const openCart = (ev) => {
 
     modalOverlay.classList.remove('modal-overlay_show');
     modalOverlay.removeEventListener('click', openCart);
+    // TODO delete events from modal
   }
 };
 
@@ -140,7 +143,7 @@ const calculateTotalPrice = (cartItems, products) => {
 const renderCartItems = () => {
   cartItemsList.textContent = '';
 
-  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const cartItems = getCartItems();
   const products = JSON.parse(localStorage.getItem('cartProductDetails') || '[]');
 
   products.forEach(({id, name, price, photoUrl}) => {
@@ -175,6 +178,26 @@ const renderCartItems = () => {
   cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
 };
 
+const updateCartItem = (productId, change) => {
+  const cartItems = getCartItems();
+  const itemIndex = cartItems.findIndex(item => item.id === productId);
+
+  if (itemIndex === -1) {
+    return;
+  }
+
+  cartItems[itemIndex].count += change;
+
+  if (cartItems[itemIndex].count <= 0) {
+    cartItems.splice(itemIndex, 1);
+  }
+
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+  updateCartCount();
+  renderCartItems();
+};
+
 cartButton.addEventListener('click', async (ev) => {
   ev.preventDefault();
 
@@ -183,7 +206,7 @@ cartButton.addEventListener('click', async (ev) => {
 
   modalOverlay.addEventListener('click', openCart);
 
-  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const cartItems = getCartItems();
   const ids = cartItems.map(item => item.id);
 
   if (!ids.length) {
@@ -198,6 +221,22 @@ cartButton.addEventListener('click', async (ev) => {
   const products = await fetchCartItems(ids);
   localStorage.setItem('cartProductDetails', JSON.stringify(products));
   renderCartItems();
+});
+
+cartItemsList.addEventListener('click', ({target}) => {
+  if (
+    target.classList.contains('cart-item__quantity-button')
+    && target.closest('.cart-item__quantity-button').value === 'decrease'
+  ) {
+    const productId = target.dataset.id;
+    updateCartItem(productId, -1);
+  } else if (
+    target.classList.contains('cart-item__quantity-button')
+    && target.closest('.cart-item__quantity-button').value === 'increase'
+  ) {
+    const productId = target.dataset.id;
+    updateCartItem(productId, 1);
+  }
 });
 
 const isStorageAvailable = (type) => {
@@ -231,12 +270,12 @@ const isStorageAvailable = (type) => {
 
 // * For the cart, the total number of products in it is made, and not by product name
 const updateCartCount = () => {
-  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const cartItems = getCartItems();
   cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
 };
 
 const addToCart = (productId) => {
-  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const cartItems = getCartItems();
 
   const existingItem = cartItems.find((item) => item.id === productId);
 

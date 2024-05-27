@@ -3,14 +3,20 @@
 // * API /api/products/category
 const API_URL = 'https://cyber-dark-scar.glitch.me';
 
-const categoryButtons = document.querySelectorAll('.store__categories-item');
-const productList = document.querySelector('.store__catalog');
-const cartButton = document.querySelector('.store__cart-button');
+const pageHeader = document.querySelector('header');
+const pageMain = document.querySelector('main');
+const pageFooter = document.querySelector('footer');
+
+const categoryButtons = pageMain.querySelectorAll('.store__categories-item');
+const productList = pageMain.querySelector('.store__catalog');
+const cartButton = pageMain.querySelector('.store__cart-button');
 const cartCount = cartButton.querySelector('.store__cart-count');
+
 const modalOverlay = document.querySelector('.modal-overlay');
-const cartItemsList = document.querySelector('.modal-cart__shopping-list');
-const cartTotalPriceElement = document.querySelector('.modal-cart__total-price');
-const cartForm = document.querySelector('.modal-cart__pickup-form');
+const cartItemsList = modalOverlay.querySelector('.modal-cart__shopping-list');
+const cartTotalPriceElement = modalOverlay.querySelector('.modal-cart__total-price');
+const cartForm = modalOverlay.querySelector('.modal-cart__pickup-form');
+const cartSubmit = cartForm.querySelector('.modal-cart__submit-button');
 
 const getCartItems = () => JSON.parse(localStorage.getItem('cartItems') || '[]');
 
@@ -39,16 +45,10 @@ const createProductCard = ({name, price, photoUrl, id}) => {
   productCard.innerHTML = `
   <article class="product-card">
     <div class="product-card__picture-container">
-      <img class="product-card__picture" src="${API_URL}${photoUrl}" 
-      alt="${name}" width="388" height="261">
+      <img class="product-card__picture" src="${API_URL}${photoUrl}" alt="${name}" width="388" height="261">
     </div>
-    <h3 class="product-card__title">
-      ${name}
-    </h3>
-    <p class="product-card__price">
-      ${price}&nbsp;
-      <span>&#8381;</span>
-    </p>
+    <h3 class="product-card__title">${name}</h3>
+    <p class="product-card__price">${price}&nbsp;<span>&#8381;</span></p>
     <button class="button button_purple product-card__buy-button" data-id="${id}" type="button">Заказать</button>
   </article>
   `;
@@ -107,6 +107,14 @@ const setDefaultCategory = (category) => {
   return category;
 };
 
+const setPageInert = (mode = true) => {
+  const pageElements = [pageHeader, pageMain, pageFooter];
+
+  if (typeof mode === 'boolean') {
+    pageElements.forEach(el => el.inert = mode);
+  }
+};
+
 const hiddenPageScroll = () => {
   document.body.style.top = `-${window.scrollY}px`;
   document.body.style.width = `100%`;
@@ -119,18 +127,6 @@ const revertPageScroll = () => {
   document.body.style.top = '';
   window.scrollTo(0, parseInt(scrollY || '0') * -1);
   document.body.style.width = '';
-};
-
-const openCart = (ev) => {
-  ev.preventDefault();
-
-  if (ev.target === ev.currentTarget || ev.target.closest('.modal-overlay__close-button')) {
-    revertPageScroll();
-
-    modalOverlay.classList.remove('modal-overlay_show');
-    modalOverlay.removeEventListener('click', openCart);
-    // TODO delete events from modal
-  }
 };
 
 const calculateTotalPrice = (cartItems, products) => {
@@ -197,47 +193,6 @@ const updateCartItem = (productId, change) => {
   updateCartCount();
   renderCartItems();
 };
-
-cartButton.addEventListener('click', async (ev) => {
-  ev.preventDefault();
-
-  modalOverlay.classList.add('modal-overlay_show');
-  hiddenPageScroll();
-
-  modalOverlay.addEventListener('click', openCart);
-
-  const cartItems = getCartItems();
-  const ids = cartItems.map(item => item.id);
-
-  if (!ids.length) {
-    cartItemsList.textContent = '';
-    
-    const listItem = document.createElement('li');
-    listItem.textContent = 'Пусто';
-    cartItemsList.append(listItem);
-    return;
-  }
-
-  const products = await fetchCartItems(ids);
-  localStorage.setItem('cartProductDetails', JSON.stringify(products));
-  renderCartItems();
-});
-
-cartItemsList.addEventListener('click', ({target}) => {
-  if (
-    target.classList.contains('cart-item__quantity-button')
-    && target.closest('.cart-item__quantity-button').value === 'decrease'
-  ) {
-    const productId = target.dataset.id;
-    updateCartItem(productId, -1);
-  } else if (
-    target.classList.contains('cart-item__quantity-button')
-    && target.closest('.cart-item__quantity-button').value === 'increase'
-  ) {
-    const productId = target.dataset.id;
-    updateCartItem(productId, 1);
-  }
-});
 
 const isStorageAvailable = (type) => {
   let storage;
@@ -311,6 +266,162 @@ const localStorageHandler = (callbackFn) => {
   callbackFn();
 };
 
+const closeCart = () => {
+  setPageInert(false);
+  revertPageScroll();
+
+  modalOverlay.classList.remove('modal-overlay_show');
+  modalOverlay.removeEventListener('click', closeCartHandler);
+  // TODO delete events from modal
+};
+
+const closeCartHandler = ({target, currentTarget}) => {
+  if (target === currentTarget || target.closest('.modal-overlay__close-button')) {
+    closeCart();
+  }
+};
+
+const openCart = async () => {
+  setPageInert(true);
+  modalOverlay.addEventListener('click', closeCartHandler);
+
+  const cartItems = getCartItems();
+  const ids = cartItems.map(item => item.id);
+
+  if (!ids.length) {
+    cartItemsList.textContent = '';
+
+    const listItem = document.createElement('li');
+    listItem.textContent = 'Пусто';
+    cartItemsList.append(listItem);
+
+    cartSubmit.disabled = true;
+    return;
+  }
+
+  const products = await fetchCartItems(ids);
+  localStorage.setItem('cartProductDetails', JSON.stringify(products));
+  renderCartItems();
+};
+
+cartButton.addEventListener('click', (ev) => {
+  ev.preventDefault();
+
+  modalOverlay.classList.add('modal-overlay_show');
+  hiddenPageScroll();
+
+  void openCart();
+});
+
+cartItemsList.addEventListener('click', ({target}) => {
+  if (
+    target.classList.contains('cart-item__quantity-button')
+    && target.closest('.cart-item__quantity-button').value === 'decrease'
+  ) {
+    const productId = target.dataset.id;
+    updateCartItem(productId, -1);
+  } else if (
+    target.classList.contains('cart-item__quantity-button')
+    && target.closest('.cart-item__quantity-button').value === 'increase'
+  ) {
+    const productId = target.dataset.id;
+    updateCartItem(productId, 1);
+  }
+});
+
+const createOrderMessageFragment = () => {
+  const fragment = document.createDocumentFragment();
+
+  const overlayElement = document.createElement('section');
+  overlayElement.classList.add('modal-overlay');
+  overlayElement.style.display = 'block';
+
+  const overlayCloseButton = document.createElement('button');
+  overlayCloseButton.type = 'button';
+  overlayCloseButton.innerHTML = '&times;';
+  overlayCloseButton.classList.add('modal-overlay__close-button');
+
+  const orderMessageElement = document.createElement('div');
+  orderMessageElement.classList.add('order-message');
+
+  const orderMessageTitle = document.createElement('h3');
+  orderMessageTitle.classList.add('order-message__title');
+
+  const orderMessageText = document.createElement('p');
+  orderMessageText.classList.add('order-message__text');
+
+  const orderMessageCloseButton = document.createElement('p');
+  orderMessageCloseButton.classList.add('button', 'button_carrot', 'order-message__close-button');
+  orderMessageCloseButton.textContent = 'Закрыть';
+  orderMessageCloseButton.tabIndex = -1;
+
+  orderMessageElement.append(orderMessageTitle, orderMessageText, orderMessageCloseButton);
+  overlayElement.append(orderMessageElement, overlayCloseButton);
+
+  overlayElement.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    if (ev.target === ev.currentTarget || ev.target.closest('.order-message__close-button')) {
+      setPageInert(false);
+      revertPageScroll();
+      overlayElement.remove();
+    }
+  });
+
+  return fragment.appendChild(overlayElement);
+};
+
+const renderOrderMessage = (orderId) => {
+  const messageFragment = createOrderMessageFragment();
+  const paragraph = messageFragment.querySelector('p');
+
+  messageFragment.querySelector('h3').textContent = 'Ваш заказ оформлен.';
+  paragraph.textContent = `Номер заказа: ${orderId}\n
+    Вы можете забрать его завтра после 12:00.\n`;
+
+  setPageInert(true);
+  hiddenPageScroll();
+  document.body.append(messageFragment);
+};
+
+const submitOrder = async (ev) => {
+  ev.preventDefault();
+
+  const storeId = cartForm['delivery-address'].value;
+  const cartItems = getCartItems();
+
+  const products = cartItems.map(({id, count}) => ({
+    id,
+    quantity: count,
+  }));
+
+  try {
+    const response = await fetch(`${API_URL}/api/orders`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({storeId, products}),
+    });
+
+    checkData(response);
+
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('cartProductDetails');
+
+    const {orderId} = await response.json();
+
+    updateCartCount();
+    closeCart();
+    renderOrderMessage(orderId);
+  } catch (e) {
+    console.error(`Ошибка оформления заказа: ${e}`);
+  }
+};
+
+cartForm.addEventListener('submit', submitOrder);
+
+const isCartOpen = () => modalOverlay.classList.contains('modal-overlay_show');
+
 const init = () => {
   let currentCategory = getCurrentCategory();
   currentCategory ??= setDefaultCategory(currentCategory);
@@ -319,6 +430,11 @@ const init = () => {
   changeCategories(currentCategory);
 
   try {
+    if (isCartOpen()) {
+      hiddenPageScroll();
+      void openCart();
+    }
+
     localStorageHandler(() => {
       updateCartCount();
       getProductName();

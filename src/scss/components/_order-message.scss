@@ -1,0 +1,35 @@
+@use "../variables" as *;
+
+.order-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 1000;
+
+  text-align: center;
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.15);
+
+  &_show {
+    display: block;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  &__text {
+    margin-bottom: 34px;
+    line-height: 1;
+    white-space: pre;
+  }
+
+  &__close-button {
+    padding: 10px 20px;
+  }
+}

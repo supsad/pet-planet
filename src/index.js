@@ -101,6 +101,16 @@ const renderCartItems = () => {
   cartItemsList.textContent = '';
 
   const cartItems = getCartItems();
+
+  if (!cartItems.length) {
+    const listItem = document.createElement('li');
+    listItem.textContent = 'Пусто';
+    cartItemsList.append(listItem);
+
+    cartSubmit.disabled = true;
+    return;
+  }
+
   const products = JSON.parse(localStorage.getItem('cartProductDetails') || '[]');
 
   products.forEach(({id, name, price, photoUrl}) => {
@@ -133,6 +143,8 @@ const renderCartItems = () => {
 
   const totalPrice = calculateTotalPrice(cartItems, products);
   cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
+
+  cartSubmit.disabled = false;
 };
 
 // * For the cart, the total number of products in it is made, and not by product name
@@ -309,17 +321,6 @@ const openCart = async () => {
 
   const cartItems = getCartItems();
   const ids = cartItems.map(item => item.id);
-
-  if (!ids.length) {
-    cartItemsList.textContent = '';
-
-    const listItem = document.createElement('li');
-    listItem.textContent = 'Пусто';
-    cartItemsList.append(listItem);
-
-    cartSubmit.disabled = true;
-    return;
-  }
 
   const products = await fetchCartItems(ids);
   localStorage.setItem('cartProductDetails', JSON.stringify(products));

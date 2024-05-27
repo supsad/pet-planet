@@ -218,13 +218,34 @@ const createModalMessageFragment = () => {
   return fragment.appendChild(overlayElement);
 };
 
+const getDeliveryDate = () => {
+  const MonthsRU = [
+    'Января',
+    'Февраля',
+    'Марта',
+    'Апреля',
+    'Мая',
+    'Июня',
+    'Июля',
+    'Августа',
+    'Сентября',
+    'Октября',
+    'Ноября',
+    'Декабря',
+  ];
+  const date = new Date();
+
+  // * The month in the Date has an array-like structure, so I don't increment month
+  return `${date.getDate() + 1} ${MonthsRU[date.getMonth()]}`;
+};
+
 const renderOrderMessage = (orderId) => {
   const messageFragment = createModalMessageFragment();
   const paragraph = messageFragment.querySelector('p');
 
   messageFragment.querySelector('h3').textContent = 'Ваш заказ оформлен.';
   paragraph.textContent = `Номер заказа: ${orderId}\n
-    Вы можете забрать его завтра после 12:00.\n`;
+    Вы можете забрать его ${getDeliveryDate()} после 12:00.\n`;
 
   setPageInert(true);
   hiddenPageScroll();

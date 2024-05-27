@@ -18,25 +18,29 @@ const cartTotalPriceElement = modalOverlay.querySelector('.modal-cart__total-pri
 const cartForm = modalOverlay.querySelector('.modal-cart__pickup-form');
 const cartSubmit = cartForm.querySelector('.modal-cart__submit-button');
 
-const getCartItems = () => JSON.parse(localStorage.getItem('cartItems') || '[]');
+const setPageInert = (mode = true) => {
+  const pageElements = [pageHeader, pageMain, pageFooter];
 
-const changeCategories = (currentCategory) => {
-  let activeTarget = currentCategory;
-
-  categoryButtons.forEach(category => {
-    category.addEventListener('click', (ev) => {
-      ev.preventDefault();
-
-      if (activeTarget !== ev.currentTarget) {
-        activeTarget.classList.remove('store__categories-item_current');
-      }
-
-      activeTarget = ev.currentTarget;
-      activeTarget.classList.add('store__categories-item_current');
-      void fetchProductByCategory(`${ev.target.dataset.category}`);
-    });
-  });
+  if (typeof mode === 'boolean') {
+    pageElements.forEach(el => el.inert = mode);
+  }
 };
+
+const hiddenPageScroll = () => {
+  document.body.style.top = `-${window.scrollY}px`;
+  document.body.style.width = `100%`;
+  document.body.style.position = 'fixed';
+};
+
+const revertPageScroll = () => {
+  const scrollY = document.body.style.top;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  document.body.style.width = '';
+};
+
+const getCartItems = () => JSON.parse(localStorage.getItem('cartItems') || '[]');
 
 const createProductCard = ({name, price, photoUrl, id}) => {
   const productCard = document.createElement('li');
@@ -93,49 +97,6 @@ const fetchCartItems = async (ids) => {
   }
 };
 
-const getCurrentCategory = () => [...categoryButtons].find(el => {
-  return el.classList.contains('store__categories-item_current');
-});
-
-const setDefaultCategory = (category) => {
-  category = categoryButtons[0];
-
-  if (!category.classList.contains('store__categories-item_current')) {
-    category.classList.add('store__categories-item_current');
-  }
-
-  return category;
-};
-
-const setPageInert = (mode = true) => {
-  const pageElements = [pageHeader, pageMain, pageFooter];
-
-  if (typeof mode === 'boolean') {
-    pageElements.forEach(el => el.inert = mode);
-  }
-};
-
-const hiddenPageScroll = () => {
-  document.body.style.top = `-${window.scrollY}px`;
-  document.body.style.width = `100%`;
-  document.body.style.position = 'fixed';
-};
-
-const revertPageScroll = () => {
-  const scrollY = document.body.style.top;
-  document.body.style.position = '';
-  document.body.style.top = '';
-  window.scrollTo(0, parseInt(scrollY || '0') * -1);
-  document.body.style.width = '';
-};
-
-const calculateTotalPrice = (cartItems, products) => {
-  return cartItems.reduce((acc, item) => {
-    const product = products.find(product => product.id === item.id);
-    return acc + product.price * item.count;
-  }, 0);
-};
-
 const renderCartItems = () => {
   cartItemsList.textContent = '';
 
@@ -174,6 +135,12 @@ const renderCartItems = () => {
   cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
 };
 
+// * For the cart, the total number of products in it is made, and not by product name
+const updateCartCount = () => {
+  const cartItems = getCartItems();
+  cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
+};
+
 const updateCartItem = (productId, change) => {
   const cartItems = getCartItems();
   const itemIndex = cartItems.findIndex(item => item.id === productId);
@@ -194,126 +161,7 @@ const updateCartItem = (productId, change) => {
   renderCartItems();
 };
 
-const isStorageAvailable = (type) => {
-  let storage;
-  try {
-    storage = window[type];
-
-    const x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-
-    return true;
-  } catch (err) {
-    return (
-      err instanceof DOMException &&
-      // * everything except Firefox
-      (err.code === 22 ||
-        // Firefox
-        err.code === 1014 ||
-        // test name field too, because code might not be present
-        // everything except Firefox
-        err.name === 'QuotaExceededError' ||
-        // Firefox
-        err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-      // acknowledge QuotaExceededError only if there's something already stored
-      storage &&
-      storage.length !== 0
-    );
-  }
-};
-
-// * For the cart, the total number of products in it is made, and not by product name
-const updateCartCount = () => {
-  const cartItems = getCartItems();
-  cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
-};
-
-const addToCart = (productId) => {
-  const cartItems = getCartItems();
-
-  const existingItem = cartItems.find((item) => item.id === productId);
-
-  if (existingItem) {
-    existingItem.count += 1;
-  } else {
-    cartItems.push({
-      id: productId,
-      count: 1,
-    });
-  }
-
-  localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  updateCartCount();
-};
-
-const getProductName = () => {
-  productList.addEventListener('click', ({target}) => {
-    if (!target.closest('.product-card__buy-button')) {
-      return;
-    }
-
-    const productId = target.dataset.id;
-    addToCart(productId);
-  })
-};
-
-const localStorageHandler = (callbackFn) => {
-  if (!isStorageAvailable('sessionStorage')) {
-    throw new Error('Ваш браузер не поддерживает локальное хранилище!');
-  }
-
-  callbackFn();
-};
-
-const closeCart = () => {
-  setPageInert(false);
-  revertPageScroll();
-
-  modalOverlay.classList.remove('modal-overlay_show');
-  modalOverlay.removeEventListener('click', closeCartHandler);
-  // TODO delete events from modal
-};
-
-const closeCartHandler = ({target, currentTarget}) => {
-  if (target === currentTarget || target.closest('.modal-overlay__close-button')) {
-    closeCart();
-  }
-};
-
-const openCart = async () => {
-  setPageInert(true);
-  modalOverlay.addEventListener('click', closeCartHandler);
-
-  const cartItems = getCartItems();
-  const ids = cartItems.map(item => item.id);
-
-  if (!ids.length) {
-    cartItemsList.textContent = '';
-
-    const listItem = document.createElement('li');
-    listItem.textContent = 'Пусто';
-    cartItemsList.append(listItem);
-
-    cartSubmit.disabled = true;
-    return;
-  }
-
-  const products = await fetchCartItems(ids);
-  localStorage.setItem('cartProductDetails', JSON.stringify(products));
-  renderCartItems();
-};
-
-cartButton.addEventListener('click', (ev) => {
-  ev.preventDefault();
-
-  modalOverlay.classList.add('modal-overlay_show');
-  hiddenPageScroll();
-
-  void openCart();
-});
-
-cartItemsList.addEventListener('click', ({target}) => {
+const quantityButtonHandler = ({target}) => {
   if (
     target.classList.contains('cart-item__quantity-button')
     && target.closest('.cart-item__quantity-button').value === 'decrease'
@@ -327,9 +175,9 @@ cartItemsList.addEventListener('click', ({target}) => {
     const productId = target.dataset.id;
     updateCartItem(productId, 1);
   }
-});
+};
 
-const createOrderMessageFragment = () => {
+const createModalMessageFragment = () => {
   const fragment = document.createDocumentFragment();
 
   const overlayElement = document.createElement('section');
@@ -342,16 +190,16 @@ const createOrderMessageFragment = () => {
   overlayCloseButton.classList.add('modal-overlay__close-button');
 
   const orderMessageElement = document.createElement('div');
-  orderMessageElement.classList.add('order-message');
+  orderMessageElement.classList.add('notification-message');
 
   const orderMessageTitle = document.createElement('h3');
-  orderMessageTitle.classList.add('order-message__title');
+  orderMessageTitle.classList.add('notification-message__title');
 
   const orderMessageText = document.createElement('p');
-  orderMessageText.classList.add('order-message__text');
+  orderMessageText.classList.add('notification-message__text');
 
   const orderMessageCloseButton = document.createElement('p');
-  orderMessageCloseButton.classList.add('button', 'button_carrot', 'order-message__close-button');
+  orderMessageCloseButton.classList.add('button', 'button_carrot', 'notification-message__close-button');
   orderMessageCloseButton.textContent = 'Закрыть';
   orderMessageCloseButton.tabIndex = -1;
 
@@ -371,7 +219,7 @@ const createOrderMessageFragment = () => {
 };
 
 const renderOrderMessage = (orderId) => {
-  const messageFragment = createOrderMessageFragment();
+  const messageFragment = createModalMessageFragment();
   const paragraph = messageFragment.querySelector('p');
 
   messageFragment.querySelector('h3').textContent = 'Ваш заказ оформлен.';
@@ -418,9 +266,176 @@ const submitOrder = async (ev) => {
   }
 };
 
-cartForm.addEventListener('submit', submitOrder);
+const closeCart = () => {
+  setPageInert(false);
+  revertPageScroll();
+
+  modalOverlay.classList.remove('modal-overlay_show');
+  modalOverlay.removeEventListener('click', closeCartHandler);
+  cartItemsList.removeEventListener('click', quantityButtonHandler);
+  cartForm.removeEventListener('submit', submitOrder);
+};
+
+const closeCartHandler = ({target, currentTarget}) => {
+  if (target === currentTarget || target.closest('.modal-overlay__close-button')) {
+    closeCart();
+  }
+};
+
+const openCart = async () => {
+  setPageInert(true);
+  modalOverlay.addEventListener('click', closeCartHandler);
+
+  const cartItems = getCartItems();
+  const ids = cartItems.map(item => item.id);
+
+  if (!ids.length) {
+    cartItemsList.textContent = '';
+
+    const listItem = document.createElement('li');
+    listItem.textContent = 'Пусто';
+    cartItemsList.append(listItem);
+
+    cartSubmit.disabled = true;
+    return;
+  }
+
+  const products = await fetchCartItems(ids);
+  localStorage.setItem('cartProductDetails', JSON.stringify(products));
+  renderCartItems();
+  cartItemsList.addEventListener('click', quantityButtonHandler);
+  cartForm.addEventListener('submit', submitOrder);
+};
+
+cartButton.addEventListener('click', (ev) => {
+  ev.preventDefault();
+
+  modalOverlay.classList.add('modal-overlay_show');
+  hiddenPageScroll();
+
+  void openCart();
+});
 
 const isCartOpen = () => modalOverlay.classList.contains('modal-overlay_show');
+
+const addToCart = (productId) => {
+  const cartItems = getCartItems();
+
+  const existingItem = cartItems.find((item) => item.id === productId);
+
+  if (existingItem) {
+    existingItem.count += 1;
+  } else {
+    cartItems.push({
+      id: productId,
+      count: 1,
+    });
+  }
+
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  updateCartCount();
+};
+
+const getProductName = () => {
+  productList.addEventListener('click', ({target}) => {
+    if (!target.closest('.product-card__buy-button')) {
+      return;
+    }
+
+    const productId = target.dataset.id;
+    addToCart(productId);
+  })
+};
+
+const setDefaultCategory = (category) => {
+  category = categoryButtons[0];
+
+  if (!category.classList.contains('store__categories-item_current')) {
+    category.classList.add('store__categories-item_current');
+  }
+
+  return category;
+};
+
+const changeCategories = (currentCategory) => {
+  let activeTarget = currentCategory;
+
+  categoryButtons.forEach(category => {
+    category.addEventListener('click', (ev) => {
+      ev.preventDefault();
+
+      if (activeTarget !== ev.currentTarget) {
+        activeTarget.classList.remove('store__categories-item_current');
+      }
+
+      activeTarget = ev.currentTarget;
+      activeTarget.classList.add('store__categories-item_current');
+      void fetchProductByCategory(`${ev.target.dataset.category}`);
+    });
+  });
+};
+
+const getCurrentCategory = () => [...categoryButtons].find(el => {
+  return el.classList.contains('store__categories-item_current');
+});
+
+const calculateTotalPrice = (cartItems, products) => {
+  return cartItems.reduce((acc, item) => {
+    const product = products.find(product => product.id === item.id);
+    return acc + product.price * item.count;
+  }, 0);
+};
+
+const isStorageAvailable = (type) => {
+  let storage;
+  try {
+    storage = window[type];
+
+    const x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+
+    return true;
+  } catch (err) {
+    return (
+      err instanceof DOMException &&
+      // * everything except Firefox
+      (err.code === 22 ||
+        // Firefox
+        err.code === 1014 ||
+        // test name field too, because code might not be present
+        // everything except Firefox
+        err.name === 'QuotaExceededError' ||
+        // Firefox
+        err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
+      storage.length !== 0
+    );
+  }
+};
+
+const localStorageHandler = (callbackFn) => {
+  if (!isStorageAvailable('sessionStorage')) {
+    throw new Error('Ваш браузер не поддерживает локальное хранилище!');
+  }
+
+  callbackFn();
+};
+
+const renderCartErrorMessage = () => {
+  const messageFragment = createModalMessageFragment();
+  const paragraph = messageFragment.querySelector('p');
+
+  messageFragment.querySelector('h3').textContent = 'Уппс... Возникла ошибка!';
+  paragraph.textContent = `Корзина неработоспособна!\n
+    Попытайтесь перезагрузить страницу.\n
+    Если ничего не вышло, то обратитесь к разработчику сайта`;
+
+  setPageInert(true);
+  hiddenPageScroll();
+  document.body.append(messageFragment);
+};
 
 const init = () => {
   let currentCategory = getCurrentCategory();
@@ -440,7 +455,8 @@ const init = () => {
       getProductName();
     });
   } catch (e) {
-    // ! cart link and error
+    console.error(`Ошибка открытия корзины: ${e}`);
+    renderCartErrorMessage();
   }
 };
 

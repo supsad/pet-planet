@@ -6,6 +6,7 @@
   grid-template-columns: repeat(2, 1fr);
   width: 676px;
   min-height: 459px;
+  max-height: 90vh;
 
   border-radius: 24px;
   background-color: $white;
@@ -35,15 +36,24 @@
   }
 
   @include tablet {
-    max-width: 550px;
+    max-width: 600px;
   }
 
   @include mobile {
     grid-template-rows: 150px 1fr;
-    grid-template-columns: minmax(300px, 450px);
+    grid-template-columns: 1fr;
+  }
+  
+  @media screen and (max-height: 680px) {
+    grid-template-rows: 1fr;
+
+    &:before {
+      display: none;
+    }
   }
 
   &__content {
+    min-height: 100%;
     grid-column: 2 / 3;
     display: flex;
     flex-direction: column;
@@ -55,6 +65,10 @@
     @include mobile {
       grid-row: 2 / 3;
       grid-column: 1 / 2;
+    }
+
+    @media screen and (max-height: 680px) {
+      height: 88vh;
     }
   }
 
@@ -71,7 +85,6 @@
 
   &__shopping-list {
     flex-grow: 1;
-    max-height: 500px;
     margin-bottom: 30px;
     overflow-y: auto;
 

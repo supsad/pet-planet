@@ -1,4 +1,5 @@
 @use "../variables" as *;
+@use "../media" as *;
 
 .modal-overlay {
   position: fixed;
@@ -11,6 +12,10 @@
 
   &_show {
     display: flex;
+  }
+
+  @include mobile {
+    align-items: end;
   }
 
   &__close-button {

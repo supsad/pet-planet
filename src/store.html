@@ -57,7 +57,7 @@
           </li>
         </ul>
 
-        <button class="store__cart-button" type="button" aria-label="Корзина покупок">
+        <button class="store__cart-button" type="button" aria-label="Открыть корзину покупок">
           <span class="store__cart-count">0</span>
           <svg class="store__cart-icon" width="28" height="28" fill="#E47537" viewBox="0 0 28 28"
                xmlns="http://www.w3.org/2000/svg">
@@ -152,7 +152,7 @@
               <li class="modal-cart__store-item">
                 <label class="radio modal-cart__store-radio">ул. Адамавая 45/1
                   <input class="radio__input" type="radio" value="adamavaya-45"
-                         name="delivery-address" id="st-adamavaya">
+                         name="delivery-address" id="st-adamavaya" checked>
                 </label>
               </li>
               <li class="modal-cart__store-item">
@@ -181,11 +181,11 @@
       </div>
     </div>
 
-    <button class="modal-overlay__close-button" type="button">&times;</button>
+    <button class="modal-overlay__close-button" type="button" aria-label="Закрыть корзину">&times;</button>
   </div>
 </section>
 
-<script src="index.js"></script>
+<script src="main.js" type="module"></script>
 </body>
 
 </html>

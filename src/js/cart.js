@@ -130,6 +130,7 @@ const cartFormHandler = async (ev) => {
   renderOrderMessage(orderId);
 };
 
+// * I didn't add a loader for opening the cart, as I think it worsens UX
 export const openCart = async () => {
   setPageInert(true);
   modalOverlay.addEventListener('click', closeCartHandler);

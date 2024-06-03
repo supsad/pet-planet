@@ -7,7 +7,10 @@ import {
   renderCartErrorMessage,
   renderLoader,
   renderProducts,
-  renderWindowLoaderFinisher, revertPageScroll, setPageInert
+  renderWindowLoaderFinisher,
+  revertPageScroll,
+  setPageInert,
+  renderBodyStab
 } from './js/dom';
 import {addToCart, isCartOpen, openCart, updateCartCount} from './js/cart';
 
@@ -84,7 +87,8 @@ const getCurrentCategory = () => [...categoryButtons].find(el => {
 const init = () => {
   setPageInert(true);
   hiddenPageScroll();
-  renderLoader(document.body);
+  const stab = renderBodyStab(document.body);
+  renderLoader(stab);
   void changeCategories();
 
   try {

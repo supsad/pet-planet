@@ -26,20 +26,18 @@ export const revertPageScroll = () => {
   document.body.style.width = '';
 };
 
-const createLoader = () => {
-  const container = document.createElement('div');
-  container.classList.add('body-stub', 'body-stub_white');
+export const renderBodyStab = (container) => {
+  const stab = document.createElement('div');
+  stab.classList.add('body-stub', 'body-stub_white');
 
-  const spin = document.createElement('div');
-  spin.classList.add('loader');
+  container.append(stab);
 
-  container.append(spin);
-
-  return container;
+  return stab;
 };
 
 export const renderLoader = (container) => {
-  const loader = createLoader();
+  const loader = document.createElement('div');
+  loader.classList.add('loader');
 
   container.append(loader);
 };

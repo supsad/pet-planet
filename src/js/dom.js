@@ -26,6 +26,37 @@ export const revertPageScroll = () => {
   document.body.style.width = '';
 };
 
+const createLoader = () => {
+  const container = document.createElement('div');
+  container.classList.add('body-stub', 'body-stub_white');
+
+  const spin = document.createElement('div');
+  spin.classList.add('loader');
+
+  container.append(spin);
+
+  return container;
+};
+
+export const renderLoader = (container) => {
+  const loader = createLoader();
+
+  container.append(loader);
+};
+
+export const renderWindowLoaderFinisher = (loader, delay) => {
+  setTimeout(() => {
+    loader.parentElement.classList.add('body-stub_loader');
+    loader.classList.add('loader_finally');
+  }, delay);
+};
+
+export const removeLoader = (loader, delay, isLoaderChild = false) => {
+  setTimeout(() => {
+    isLoaderChild ? loader.parentElement.remove() : loader.remove();
+  }, delay)
+};
+
 const createModalMessageFragment = () => {
   const fragment = document.createDocumentFragment();
 

@@ -1,6 +1,14 @@
-import localStorageHandler from './js/storage.js';
+import localStorageHandler from './js/storage';
 import {fetchProductsByCategory} from './js/api';
-import {hiddenPageScroll, pageMain, renderCartErrorMessage, renderProducts} from './js/dom';
+import {
+  hiddenPageScroll,
+  pageMain,
+  removeLoader,
+  renderCartErrorMessage,
+  renderLoader,
+  renderProducts,
+  renderWindowLoaderFinisher, revertPageScroll, setPageInert
+} from './js/dom';
 import {addToCart, isCartOpen, openCart, updateCartCount} from './js/cart';
 
 const categoryButtons = pageMain.querySelectorAll('.store__categories-item');
@@ -31,10 +39,23 @@ const changeCategories = async () => {
   let currentCategory = getCurrentCategory();
   currentCategory ??= setDefaultCategory(currentCategory);
 
-  let products = await fetchProductsByCategory(
-    `${currentCategory.firstElementChild.dataset.category}`,
-  );
-  renderProducts(products, productList);
+  try {
+    const products = await fetchProductsByCategory(
+      `${currentCategory.firstElementChild.dataset.category}`,
+    );
+    renderProducts(products, productList);
+  } catch (e) {
+    throw new Error(`Не удалось загрузить каталог товаров: ${e}`);
+  } finally {
+    const loader = document.querySelector('.loader');
+    setTimeout(() => {
+      setPageInert(false);
+      revertPageScroll();
+      }, 1500);
+    renderWindowLoaderFinisher(loader, 1500);
+    removeLoader(loader, 3000, true);
+  }
+
 
   let activeTarget = currentCategory;
 
@@ -48,7 +69,7 @@ const changeCategories = async () => {
 
       activeTarget = ev.currentTarget;
       activeTarget.classList.add('store__categories-item_current');
-      products = await fetchProductsByCategory(
+      const products = await fetchProductsByCategory(
         `${ev.target.dataset.category}`,
       );
       renderProducts(products, productList);
@@ -61,6 +82,9 @@ const getCurrentCategory = () => [...categoryButtons].find(el => {
 });
 
 const init = () => {
+  setPageInert(true);
+  hiddenPageScroll();
+  renderLoader(document.body);
   void changeCategories();
 
   try {

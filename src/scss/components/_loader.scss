@@ -1,7 +1,7 @@
 @use "../variables" as *;
 
 $opacity: 0.75;
-$colors: rgba($light, $opacity) rgba($purple, $opacity) rgba($carrot, $opacity) rgba($green, $opacity);
+$colors: rgba(darken($light, 20), $opacity) rgba($purple, $opacity) rgba($carrot, $opacity) rgba($green, $opacity);
 $size: 2.5em;
 $thickness: 0.5em;
 

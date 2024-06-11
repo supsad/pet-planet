@@ -37,10 +37,7 @@
 
   &_store {
     background-color: $green;
-    background-image: image-set(
-        url("/img/bg-cat.png") 1x,
-        url("/img/bg-cat@2x.png") 2x)
-    , url("/img/pattern.svg");
+    background-image: url("/img/bg-cat.png"), url("/img/pattern.svg");
     background-size: 839px, auto;
     background-position: right bottom, center;
     background-repeat: no-repeat, repeat;
@@ -88,6 +85,17 @@
 
     @include mobile {
       margin-bottom: 20px;
+    }
+  }
+
+  &__button {
+    @include mobile {
+      width: 100%;
+
+      &::after {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 }

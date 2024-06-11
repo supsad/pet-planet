@@ -1,25 +1,49 @@
-import {hiddenPageScroll, pageMain, renderCartItems, renderOrderMessage, revertPageScroll, setPageInert} from './dom';
+import {
+  getPageElements,
+  hiddenPageScroll,
+  renderCartItems,
+  renderOrderMessage,
+  revertPageScroll,
+  setPageInert,
+  renderEmptyCart,
+} from './dom';
 import {fetchCartItems, submitOrder} from './api';
 
-const cartButton = pageMain.querySelector('.store__cart-button');
-const cartCount = cartButton.querySelector('.store__cart-count');
+const cartElements = {};
 
-const modalOverlay = document.querySelector('.modal-overlay');
-const cartItemsList = modalOverlay.querySelector('.modal-cart__shopping-list');
-const cartTotalPriceElement = modalOverlay.querySelector('.modal-cart__total-price');
-const cartForm = modalOverlay.querySelector('.modal-cart__pickup-form');
-const cartSubmit = cartForm.querySelector('.modal-cart__submit-button');
+export const getCartElements = () => {
+  const cartButton = document.querySelector('.store__cart-button');
+  const cartCount = cartButton.querySelector('.store__cart-count');
 
+  const modalOverlay = document.querySelector('.modal-overlay');
+  const cartItemsList = modalOverlay.querySelector('.modal-cart__shopping-list');
+  const cartTotalPriceElement = modalOverlay.querySelector('.modal-cart__total-price');
+  const cartForm = modalOverlay.querySelector('.modal-cart__pickup-form');
+  const cartSubmit = cartForm.querySelector('.modal-cart__submit-button');
+
+  getPageElements(
+    cartElements,
+    {
+      cartButton,
+      cartCount,
+      modalOverlay,
+      cartItemsList,
+      cartTotalPriceElement,
+      cartForm,
+      cartSubmit,
+    },
+  );
+};
 const getCartItems = () => JSON.parse(localStorage.getItem('cartItems') || '[]');
 const getProductDetails = () => JSON.parse(localStorage.getItem('cartProductDetails') || '[]');
 
 
-export const isCartOpen = () => modalOverlay.classList.contains('modal-overlay_show');
+export const isCartOpen = () => cartElements.modalOverlay.classList.contains('modal-overlay_show');
 
 // * For the cart, the total number of products in it is made, and not by product name
 export const updateCartCount = () => {
   const cartItems = getCartItems();
-  cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
+  cartElements.cartCount.textContent = cartItems.reduce((count, item) => count + item.count, 0);
 };
 
 export const addToCart = (productId) => {
@@ -67,9 +91,18 @@ const updateCartItem = (productId, change) => {
   const totalPrice = calculateTotalPrice(cartItems, products);
 
   updateCartCount();
+
+  if (!cartItems.length) {
+    renderEmptyCart(
+      totalPrice,
+      cartElements.cartItemsList, cartElements.cartSubmit, cartElements.cartTotalPriceElement
+    );
+    return;
+  }
+
   renderCartItems(
     products, totalPrice, cartItems,
-    cartItemsList, cartSubmit, cartTotalPriceElement,
+    cartElements.cartItemsList, cartElements.cartSubmit, cartElements.cartTotalPriceElement,
   );
 };
 
@@ -99,16 +132,16 @@ const closeCart = () => {
   setPageInert(false);
   revertPageScroll();
 
-  modalOverlay.classList.remove('modal-overlay_show');
-  modalOverlay.removeEventListener('click', closeCartHandler);
-  cartItemsList.removeEventListener('click', quantityButtonHandler);
-  cartForm.removeEventListener('submit', cartFormHandler);
+  cartElements.modalOverlay.classList.remove('modal-overlay_show');
+  cartElements.modalOverlay.removeEventListener('click', closeCartHandler);
+  cartElements.cartItemsList.removeEventListener('click', quantityButtonHandler);
+  cartElements.cartForm.removeEventListener('submit', cartFormHandler);
 };
 
 const cartFormHandler = async (ev) => {
   ev.preventDefault();
 
-  const storeId = cartForm['delivery-address'].value;
+  const storeId = cartElements.cartForm['delivery-address'].value;
   const cartItems = getCartItems();
 
   const products = cartItems.map(({id, count}) => ({
@@ -133,9 +166,18 @@ const cartFormHandler = async (ev) => {
 // * I didn't add a loader for opening the cart, as I think it worsens UX
 export const openCart = async () => {
   setPageInert(true);
-  modalOverlay.addEventListener('click', closeCartHandler);
+  cartElements.modalOverlay.addEventListener('click', closeCartHandler);
 
   const cartItems = getCartItems();
+
+  if (!cartItems.length) {
+    renderEmptyCart(
+      0,
+      cartElements.cartItemsList, cartElements.cartSubmit, cartElements.cartTotalPriceElement
+    );
+    return;
+  }
+
   const ids = cartItems.map(item => item.id);
 
   const products = await fetchCartItems(ids);
@@ -144,18 +186,20 @@ export const openCart = async () => {
   const totalPrice = calculateTotalPrice(cartItems, products);
   renderCartItems(
     products, totalPrice, cartItems,
-    cartItemsList, cartSubmit, cartTotalPriceElement,
+    cartElements.cartItemsList, cartElements.cartSubmit, cartElements.cartTotalPriceElement,
   );
 
-  cartItemsList.addEventListener('click', quantityButtonHandler);
-  cartForm.addEventListener('submit', cartFormHandler);
+  cartElements.cartItemsList.addEventListener('click', quantityButtonHandler);
+  cartElements.cartForm.addEventListener('submit', cartFormHandler);
 };
 
-cartButton.addEventListener('click', (ev) => {
-  ev.preventDefault();
+export const cartButtonHandler = () => {
+  cartElements.cartButton.addEventListener('click', (ev) => {
+    ev.preventDefault();
 
-  modalOverlay.classList.add('modal-overlay_show');
-  hiddenPageScroll();
+    cartElements.modalOverlay.classList.add('modal-overlay_show');
+    hiddenPageScroll();
 
-  void openCart();
-});
+    void openCart();
+  });
+};

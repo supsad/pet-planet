@@ -1,110 +1,51 @@
-import localStorageHandler from './js/storage';
-import {fetchProductsByCategory} from './js/api';
-import {
-  hiddenPageScroll,
-  pageMain,
-  removeLoader,
-  renderCartErrorMessage,
-  renderLoader,
-  renderProducts,
-  renderWindowLoaderFinisher,
-  revertPageScroll,
-  setPageInert,
-  renderBodyStab
-} from './js/dom';
-import {addToCart, isCartOpen, openCart, updateCartCount} from './js/cart';
+import barba from '@barba/core';
+import anime from 'animejs/lib/anime.es.js';
+import {renderStoreButton} from './js/dom';
+import {storeInit} from './js/store'
 
-const categoryButtons = pageMain.querySelectorAll('.store__categories-item');
-const productList = pageMain.querySelector('.store__catalog');
-
-const getProductName = () => {
-  productList.addEventListener('click', ({target}) => {
-    if (!target.closest('.product-card__buy-button')) {
-      return;
-    }
-
-    const productId = target.dataset.id;
-    addToCart(productId);
-  })
-};
-
-const setDefaultCategory = (category) => {
-  category = categoryButtons[0];
-
-  if (!category.classList.contains('store__categories-item_current')) {
-    category.classList.add('store__categories-item_current');
-  }
-
-  return category;
-};
-
-const changeCategories = async () => {
-  let currentCategory = getCurrentCategory();
-  currentCategory ??= setDefaultCategory(currentCategory);
-
-  try {
-    const products = await fetchProductsByCategory(
-      `${currentCategory.firstElementChild.dataset.category}`,
-    );
-    renderProducts(products, productList);
-  } catch (e) {
-    throw new Error(`Не удалось загрузить каталог товаров: ${e}`);
-  } finally {
-    const loader = document.querySelector('.loader');
-    setTimeout(() => {
-      setPageInert(false);
-      revertPageScroll();
-      }, 1500);
-    renderWindowLoaderFinisher(loader, 1500);
-    removeLoader(loader, 3000, true);
-  }
-
-
-  let activeTarget = currentCategory;
-
-  categoryButtons.forEach(category => {
-    category.addEventListener('click', async (ev) => {
-      ev.preventDefault();
-
-      if (activeTarget !== ev.currentTarget) {
-        activeTarget.classList.remove('store__categories-item_current');
-      }
-
-      activeTarget = ev.currentTarget;
-      activeTarget.classList.add('store__categories-item_current');
-      const products = await fetchProductsByCategory(
-        `${ev.target.dataset.category}`,
-      );
-      renderProducts(products, productList);
-    });
-  });
-};
-
-const getCurrentCategory = () => [...categoryButtons].find(el => {
-  return el.classList.contains('store__categories-item_current');
-});
+/*
+ * Because I wanted to make SPA-like training application out of this,
+ * I needed to rewrite the code in the map scripts and store so that global variables
+ * did not work when the main page was loaded.
+ * I agree that this looks like the biggest crutch,
+ * but attempts to load the script of another page when it is opened,
+ * or to make some kind of bus, were not successful
+ * Therefore, on vanilla JS I only came up with this solution
+ */
 
 const init = () => {
-  setPageInert(true);
-  hiddenPageScroll();
-  const stab = renderBodyStab(document.body);
-  renderLoader(stab);
-  void changeCategories();
+  document.documentElement.classList.remove('no-js');
 
-  try {
-    if (isCartOpen()) {
-      hiddenPageScroll();
-      void openCart();
-    }
-
-    localStorageHandler(() => {
-      updateCartCount();
-      getProductName();
-    });
-  } catch (e) {
-    console.error(`Ошибка открытия корзины: ${e}`);
-    renderCartErrorMessage();
-  }
+  barba.init({
+    views: [{
+      namespace: 'home',
+      afterEnter() {
+        renderStoreButton();
+      },
+    }, {
+      namespace: 'store',
+      afterEnter() {
+        console.log('work store');
+        storeInit();
+      },
+    }],
+    transitions: [{
+      name: 'opacity-transition',
+      sync: true,
+      async leave(data) {
+        return anime({
+          targets: '.barba-wrapper',
+          opacity: 0,
+        });
+      },
+      async enter(data) {
+        return anime({
+          targets: '.barba-wrapper',
+          opacity: 1,
+        });
+      }
+    }]
+  });
 };
 
 document.addEventListener('DOMContentLoaded', init);

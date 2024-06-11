@@ -1,11 +1,19 @@
 import {API_URL} from './api';
 
-const pageHeader = document.querySelector('header');
-export const pageMain = document.querySelector('main');
-const pageFooter = document.querySelector('footer');
+export const getPageElements = (receiveObj, elementsObj) => Object.assign(receiveObj, elementsObj);
+
+export const renderStoreButton = () => {
+  const button = document.querySelector('.hero__button');
+  button.href = './store.html';
+  button.textContent = 'Перейти в магазин';
+};
 
 export const setPageInert = (mode = true) => {
-  const pageElements = [pageHeader, pageMain, pageFooter];
+  const pageElements = [
+    document.querySelector('header'),
+    document.querySelector('main'),
+    document.querySelector('footer'),
+  ];
 
   if (typeof mode === 'boolean') {
     pageElements.forEach(el => el.inert = mode);
@@ -173,18 +181,21 @@ export const renderProducts = (products, productList) => {
   });
 };
 
-export const renderCartItems = (products, totalPrice, cartItems, ...containers) => {
+export const renderEmptyCart = (totalPrice, ...containers) => {
   const [container, cartSubmit, cartTotalPriceElement] = containers;
   container.textContent = '';
 
-  if (!cartItems.length) {
-    const listItem = document.createElement('li');
-    listItem.textContent = 'Пусто';
-    container.append(listItem);
+  const listItem = document.createElement('li');
+  listItem.textContent = 'Пусто';
+  container.append(listItem);
 
-    cartSubmit.disabled = true;
-    return;
-  }
+  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
+  cartSubmit.disabled = true;
+};
+
+export const renderCartItems = (products, totalPrice, cartItems, ...containers) => {
+  const [container, cartSubmit, cartTotalPriceElement] = containers;
+  container.textContent = '';
 
   products.forEach(({id, name, price, photoUrl}) => {
     const cartItem = cartItems.find(item => item.id === id);

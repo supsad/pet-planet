@@ -15,51 +15,29 @@
     background-color: $white;
   }
 
-  &_loader {
+  &_transparent {
     background-color: transparent;
+  }
 
-    &::before,
-    &::after {
-      content: "";
-      position: fixed;
-      left: 0;
+  &__transit {
+    content: "";
+    position: fixed;
+    left: 0;
 
-      display: block;
-      width: 200%;
-      height: 80%;
+    display: block;
+    width: 200%;
+    height: 80%;
 
-      background-color: $white;
-    }
+    background-color: $white;
 
-    &::before {
+    &_left {
       top: 0;
-      animation: stub-a-slideout 2.8s ease-in-out 0.2s forwards;
+      rotate: -195deg;
     }
 
-    &::after {
+    &_right {
       bottom: 0;
-      animation: stub-b-slideout 3s ease-in-out 0.2s forwards;
+      rotate: 165deg;
     }
   }
 }
-
-@keyframes stub-a-slideout {
-  from {
-    transform: rotate(-195deg) translate(25%, 75%);
-  }
-
-  to {
-    transform: rotate(-195deg) translate(150%, 400%);
-  }
-}
-
-@keyframes stub-b-slideout {
-  from {
-    transform: rotate(165deg) translate(25%, 0%);
-  }
-
-  to {
-    transform: rotate(165deg) translate(-100%, -450%);
-  }
-}
-

@@ -1,11 +1,33 @@
 import {API_URL} from './api';
 
+const STORE_PATH = './store.html';
+const RUBLE_SYMBOL = '&#8381;'
+
+const MonthsRU = [
+  'Января',
+  'Февраля',
+  'Марта',
+  'Апреля',
+  'Мая',
+  'Июня',
+  'Июля',
+  'Августа',
+  'Сентября',
+  'Октября',
+  'Ноября',
+  'Декабря',
+];
+
+export const removeNoJs = () => document.documentElement.removeAttribute('class');
+
 export const getPageElements = (receiveObj, elementsObj) => Object.assign(receiveObj, elementsObj);
 
 export const renderStoreButton = () => {
   const button = document.querySelector('.hero__button');
-  button.href = './store.html';
+  button.href = STORE_PATH;
   button.textContent = 'Перейти в магазин';
+
+  return button;
 };
 
 export const setPageInert = (mode = true) => {
@@ -34,13 +56,51 @@ export const revertPageScroll = () => {
   document.body.style.width = '';
 };
 
-export const renderBodyStab = (container) => {
+const createBodyStub = () => {
   const stab = document.createElement('div');
-  stab.classList.add('body-stub', 'body-stub_white');
-
-  container.append(stab);
+  stab.classList.add('body-stub');
 
   return stab;
+};
+
+const createStubTransition = (stub) => {
+  stub.classList.add('body-stub_white');
+
+  const stubCoverLeft = document.createElement('div');
+  const stubCoverRight = document.createElement('div');
+
+  stubCoverLeft.classList.add('body-stub__transit', 'body-stub__transit_left');
+  stubCoverRight.classList.add('body-stub__transit', 'body-stub__transit_right');
+
+  stub.append(stubCoverLeft, stubCoverRight);
+
+  return stub;
+};
+
+export const renderBodyStubTransit = (container) => {
+  const transit = createStubTransition(createBodyStub());
+  transit.classList.add('body-stub_transparent', 'visually-hidden');
+
+  if (container === document.body) {
+    document.querySelector('script').before(transit);
+  }
+
+  container.append(transit);
+  return transit;
+};
+
+const createLoader = () => {
+  const loader = document.createElement('div');
+  loader.classList.add('loader');
+
+  const dotsA = document.createElement('div');
+  const dotsB = document.createElement('div');
+  dotsA.classList.add('loader__dots', 'loader__dots_a');
+  dotsA.classList.add('loader__dots', 'loader__dots_b');
+
+  loader.append(dotsA, dotsB);
+
+  return loader;
 };
 
 export const renderLoader = (container) => {
@@ -106,20 +166,6 @@ const createModalMessageFragment = () => {
 };
 
 const getDeliveryDate = () => {
-  const MonthsRU = [
-    'Января',
-    'Февраля',
-    'Марта',
-    'Апреля',
-    'Мая',
-    'Июня',
-    'Июля',
-    'Августа',
-    'Сентября',
-    'Октября',
-    'Ноября',
-    'Декабря',
-  ];
   const date = new Date();
 
   // * The month in the Date has an array-like structure, so I don't increment month
@@ -163,7 +209,7 @@ const createProductCard = ({name, price, photoUrl, id}) => {
       <img class="product-card__picture" src="${API_URL}${photoUrl}" alt="${name}" width="388" height="261">
     </div>
     <h3 class="product-card__title">${name}</h3>
-    <p class="product-card__price">${price}&nbsp;<span>&#8381;</span></p>
+    <p class="product-card__price">${price}&nbsp;<span>${RUBLE_SYMBOL}</span></p>
     <button class="button button_purple product-card__buy-button" data-id="${id}" type="button">Заказать</button>
   </article>
   `;
@@ -189,7 +235,7 @@ export const renderEmptyCart = (totalPrice, ...containers) => {
   listItem.textContent = 'Пусто';
   container.append(listItem);
 
-  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
+  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>${RUBLE_SYMBOL}</span>`;
   cartSubmit.disabled = true;
 };
 
@@ -219,12 +265,12 @@ export const renderCartItems = (products, totalPrice, cartItems, ...containers) 
         <button class="counter-button counter-button_green cart-item__quantity-button"
                 type="button" value="increase" data-id="${id}">+</button>
       </div>
-      <p class="cart-item__price">${price * cartItem.count}&nbsp;<span>&#8381;</span></p>
+      <p class="cart-item__price">${price * cartItem.count}&nbsp;<span>${RUBLE_SYMBOL}</span></p>
     `;
 
     container.append(listItem);
   });
 
-  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>&#8381;</span>`;
+  cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;<span>${RUBLE_SYMBOL}</span>`;
   cartSubmit.disabled = false;
 };

@@ -1,7 +1,7 @@
 import barba from '@barba/core';
-import anime from 'animejs/lib/anime.es.js';
-import {renderStoreButton} from './js/dom';
+import {removeNoJs, renderBodyStubTransit, renderStoreButton} from './js/dom';
 import {storeInit} from './js/store'
+import {showBodyTransition, transitionAnimationHandler,} from './js/transition';
 
 /*
  * Because I wanted to make SPA-like training application out of this,
@@ -13,38 +13,48 @@ import {storeInit} from './js/store'
  * Therefore, on vanilla JS I only came up with this solution
  */
 
+// TODO Сделать переход похожий переход на загрузку страницы, чтобы она плавно перетекала
+// TODO Отключить загрузку, если статус страницы 304 - закэшированно
+// TODO Попытаться исправить NS_BINDING_ABORTED при переходе на index.html ->
+// ! В хром не работает переход, так как нужно дополнительно настроить роутинг (из-за открытия /pet-planet)
+
 const init = () => {
-  document.documentElement.classList.remove('no-js');
+  removeNoJs();
+  const transit = renderBodyStubTransit(document.body);
 
   barba.init({
-    views: [{
-      namespace: 'home',
-      afterEnter() {
-        renderStoreButton();
+    debug: true,
+    views: [
+      {
+        namespace: 'home',
+        beforeEnter: (data) => renderStoreButton(),
       },
-    }, {
-      namespace: 'store',
-      afterEnter() {
-        console.log('work store');
-        storeInit();
-      },
-    }],
-    transitions: [{
-      name: 'opacity-transition',
-      sync: true,
-      async leave(data) {
-        return anime({
-          targets: '.barba-wrapper',
-          opacity: 0,
-        });
-      },
-      async enter(data) {
-        return anime({
-          targets: '.barba-wrapper',
-          opacity: 1,
-        });
+      {
+        namespace: 'store',
+        afterEnter: (data) => storeInit(),
       }
-    }]
+    ],
+    transitions: [{
+        name: 'default-transition',
+        async leave({next}) {
+          transit.classList.remove('visually-hidden');
+          await transitionAnimationHandler(
+            'close',
+            () => next.container.remove(),
+          );
+        },
+        async enter({next}) {
+          await showBodyTransition(
+            next.container,
+            async () => {
+              await transitionAnimationHandler(
+                'open',
+                () => transit.classList.add('visually-hidden'),
+              );
+            },
+          );
+        },
+      }],
   });
 };
 

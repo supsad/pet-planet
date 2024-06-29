@@ -1,7 +1,7 @@
 import barba from '@barba/core';
-import {removeNoJs, renderBodyStubTransit, renderStoreButton} from './js/dom';
+import {removeNoJs, renderBodyStubTransit, renderStoreButton, setScrollWindowToTop, renderLoader} from './js/dom';
 import {storeInit} from './js/store'
-import {showBodyTransition, transitionAnimationHandler,} from './js/transition';
+import {showBodyTransition, transitionAnimationHandler} from './js/animation';
 
 /*
  * Because I wanted to make SPA-like training application out of this,
@@ -13,14 +13,8 @@ import {showBodyTransition, transitionAnimationHandler,} from './js/transition';
  * Therefore, on vanilla JS I only came up with this solution
  */
 
-// TODO Сделать переход похожий переход на загрузку страницы, чтобы она плавно перетекала
-// TODO Отключить загрузку, если статус страницы 304 - закэшированно
-// TODO Попытаться исправить NS_BINDING_ABORTED при переходе на index.html ->
-// ! В хром не работает переход, так как нужно дополнительно настроить роутинг (из-за открытия /pet-planet)
-
 const init = () => {
   removeNoJs();
-  const transit = renderBodyStubTransit(document.body);
 
   barba.init({
     debug: true,
@@ -34,11 +28,14 @@ const init = () => {
         afterEnter: (data) => storeInit(),
       }
     ],
-    transitions: [{
+    transitions: [
+      {
         name: 'default-transition',
         async leave({next}) {
-          transit.classList.remove('visually-hidden');
+          renderBodyStubTransit(document.body)
+            .classList.add('body-stub_transition');
           await transitionAnimationHandler(
+            '.body-stub_transition',
             'close',
             () => next.container.remove(),
           );
@@ -47,9 +44,13 @@ const init = () => {
           await showBodyTransition(
             next.container,
             async () => {
+              setScrollWindowToTop();
               await transitionAnimationHandler(
+                '.body-stub_transition',
                 'open',
-                () => transit.classList.add('visually-hidden'),
+                () => document
+                  .querySelector('.body-stub')
+                  .remove(),
               );
             },
           );

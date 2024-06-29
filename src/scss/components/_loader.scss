@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use '../variables' as *;
 
 $opacity: 0.75;
 $colors: rgba(darken($light, 20), $opacity) rgba($purple, $opacity) rgba($carrot, $opacity) rgba($green, $opacity);
@@ -16,7 +16,7 @@ $offset: calc($lat - $thickness);
   top: calc(50% - calc($size / 2));
   left: calc(50% - calc($size / 2));
   z-index: 10001;
-  transform: rotate(165deg);
+  rotate: -15deg;
 
   &::before,
   &::after {
@@ -39,14 +39,60 @@ $offset: calc($lat - $thickness);
     animation: after 2s infinite;
   }
 
-  &_finally {
+  &_enter {
     &::before {
-      animation: before-finally 2s ease-in-out;
+      animation: before-enter 1.2s infinite ease;
     }
 
     &::after {
-      animation: after-finally 4s ease-in-out;
+      animation: after-enter 1.2s infinite ease;
     }
+  }
+
+  &_leave {
+    &::before {
+      animation: before-leave 2s ease-in-out;
+    }
+
+    &::after {
+      animation: after-leave 4s ease-in-out;
+    }
+  }
+}
+
+@keyframes before-enter {
+  0% {
+    width: 100em;
+    box-shadow: 100em (-$offset) nth($colors, 1),
+    -100em $offset nth($colors, 3);
+  }
+  50% {
+    width: $size;
+    box-shadow: 2em (-$offset) nth($colors, 1),
+      -2em $offset nth($colors, 3);
+  }
+  100% {
+    width: $thickness;
+    box-shadow: $lat (-$offset) nth($colors, 1),
+      (-$lat) $offset nth($colors, 3);
+  }
+}
+
+@keyframes after-enter {
+  0% {
+    height: 100em;
+    box-shadow: $offset 100em nth($colors, 2),
+      (-$offset) -100em nth($colors, 4);
+  }
+  50% {
+    height: $size;
+    box-shadow: $offset 2em nth($colors, 2),
+    (-$offset) -2em nth($colors, 4);
+  }
+  100% {
+    height: $thickness;
+    box-shadow: $offset $lat nth($colors, 2),
+      (-$offset) (-$lat) nth($colors, 4);
   }
 }
 
@@ -94,7 +140,7 @@ $offset: calc($lat - $thickness);
   }
 }
 
-@keyframes before-finally {
+@keyframes before-leave {
   0% {
     width: $thickness;
     box-shadow: $lat (-$offset) nth($colors, 1),
@@ -113,7 +159,7 @@ $offset: calc($lat - $thickness);
   }
 }
 
-@keyframes after-finally {
+@keyframes after-leave {
   0% {
     width: $thickness;
     box-shadow: $lat (-$offset) nth($colors, 2),

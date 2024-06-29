@@ -2,12 +2,13 @@ import {
   getPageElements,
   hiddenPageScroll,
   renderCartItems,
-  renderOrderMessage,
+  renderNotificationMessageOverlay,
   revertPageScroll,
   setPageInert,
   renderEmptyCart,
 } from './dom';
 import {fetchCartItems, submitOrder} from './api';
+import {getDeliveryDate} from './date';
 
 const cartElements = {};
 
@@ -160,7 +161,11 @@ const cartFormHandler = async (ev) => {
 
   updateCartCount();
   closeCart();
-  renderOrderMessage(orderId);
+  renderNotificationMessageOverlay(
+    'Ваш заказ оформлен.',
+    `Номер заказа: ${orderId}\n
+    Вы можете забрать его ${getDeliveryDate()} после 12:00.\n`,
+  );
 };
 
 // * I didn't add a loader for opening the cart, as I think it worsens UX

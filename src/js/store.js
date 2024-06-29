@@ -1,18 +1,8 @@
 import localStorageHandler from './storage';
 import {fetchProductsByCategory} from './api';
-import {
-  hiddenPageScroll,
-  removeLoader,
-  renderCartErrorMessage,
-  renderLoader,
-  renderProducts,
-  renderWindowLoaderFinisher,
-  revertPageScroll,
-  setPageInert,
-  renderBodyStab,
-  getPageElements
-} from './dom';
-import {addToCart, isCartOpen, openCart, updateCartCount, cartButtonHandler, getCartElements} from './cart';
+import {getPageElements, hiddenPageScroll, renderNotificationMessageOverlay, renderProducts} from './dom';
+import {addToCart, cartButtonHandler, getCartElements, isCartOpen, openCart, updateCartCount} from './cart';
+import {loaderAnimationIn, loaderAnimationOut} from './animation';
 
 const storeElements = {};
 const getProductName = () => {
@@ -36,6 +26,10 @@ const setDefaultCategory = (category) => {
   return category;
 };
 
+const getCurrentCategory = () => [...storeElements.categoryButtons].find(el => {
+  return el.classList.contains('store__categories-item_current');
+});
+
 const changeCategories = async () => {
   let currentCategory = getCurrentCategory();
   currentCategory ??= setDefaultCategory(currentCategory);
@@ -46,15 +40,15 @@ const changeCategories = async () => {
     );
     renderProducts(products, storeElements.productList);
   } catch (e) {
+    renderNotificationMessageOverlay(
+      'Уппс... Возникла ошибка!',
+      `Корзина неработоспособна!\n
+    Попытайтесь перезагрузить страницу.\n
+    Если ничего не вышло, то обратитесь в поддержку`,
+    );
     throw new Error(`Не удалось загрузить каталог товаров: ${e}`);
   } finally {
-    const loader = document.querySelector('.loader');
-    setTimeout(() => {
-      setPageInert(false);
-      revertPageScroll();
-    }, 1500);
-    renderWindowLoaderFinisher(loader, 1500);
-    removeLoader(loader, 3000, true);
+    loaderAnimationOut();
   }
 
 
@@ -78,16 +72,9 @@ const changeCategories = async () => {
   });
 };
 
-const getCurrentCategory = () => [...storeElements.categoryButtons].find(el => {
-  return el.classList.contains('store__categories-item_current');
-});
-
-export const storeInit = () => {
-  // * loading page
-  setPageInert(true);
-  hiddenPageScroll();
-  const stab = renderBodyStab(document.body);
-  renderLoader(stab);
+export const storeInit = async () => {
+  // * loader
+  await loaderAnimationIn();
 
   // * init page
   try {
@@ -106,13 +93,13 @@ export const storeInit = () => {
     console.error(`Не удалось получить элементы страницы: ${e}`);
   }
 
-  void changeCategories();
+  await changeCategories();
   cartButtonHandler();
 
   try {
     if (isCartOpen()) {
       hiddenPageScroll();
-      void openCart();
+      await openCart();
     }
 
     localStorageHandler(() => {
@@ -121,6 +108,11 @@ export const storeInit = () => {
     });
   } catch (e) {
     console.error(`Ошибка открытия корзины: ${e}`);
-    renderCartErrorMessage();
+    renderNotificationMessageOverlay(
+      'Уппс... Возникла ошибка!',
+      `Корзина неработоспособна!\n
+    Попытайтесь перезагрузить страницу.\n
+    Если ничего не вышло, то обратитесь в поддержку`,
+    );
   }
 };

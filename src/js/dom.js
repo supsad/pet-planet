@@ -3,21 +3,6 @@ import {API_URL} from './api';
 const STORE_PATH = './store.html';
 const RUBLE_SYMBOL = '&#8381;'
 
-const MonthsRU = [
-  'Января',
-  'Февраля',
-  'Марта',
-  'Апреля',
-  'Мая',
-  'Июня',
-  'Июля',
-  'Августа',
-  'Сентября',
-  'Октября',
-  'Ноября',
-  'Декабря',
-];
-
 export const removeNoJs = () => document.documentElement.removeAttribute('class');
 
 export const getPageElements = (receiveObj, elementsObj) => Object.assign(receiveObj, elementsObj);
@@ -29,6 +14,8 @@ export const renderStoreButton = () => {
 
   return button;
 };
+
+export const setScrollWindowToTop = () => window.scrollTo(0, 0);
 
 export const setPageInert = (mode = true) => {
   const pageElements = [
@@ -56,15 +43,9 @@ export const revertPageScroll = () => {
   document.body.style.width = '';
 };
 
-const createBodyStub = () => {
-  const stab = document.createElement('div');
-  stab.classList.add('body-stub');
-
-  return stab;
-};
-
-const createStubTransition = (stub) => {
-  stub.classList.add('body-stub_white');
+const createStubTransition = () => {
+  const stub = document.createElement('div');
+  stub.classList.add('body-stub', 'body-stub_white');
 
   const stubCoverLeft = document.createElement('div');
   const stubCoverRight = document.createElement('div');
@@ -78,49 +59,28 @@ const createStubTransition = (stub) => {
 };
 
 export const renderBodyStubTransit = (container) => {
-  const transit = createStubTransition(createBodyStub());
-  transit.classList.add('body-stub_transparent', 'visually-hidden');
+  const stub = createStubTransition();
+  stub.classList.add('body-stub_transparent');
 
   if (container === document.body) {
-    document.querySelector('script').before(transit);
+    document.querySelector('script').before(stub);
   }
 
-  container.append(transit);
-  return transit;
-};
-
-const createLoader = () => {
-  const loader = document.createElement('div');
-  loader.classList.add('loader');
-
-  const dotsA = document.createElement('div');
-  const dotsB = document.createElement('div');
-  dotsA.classList.add('loader__dots', 'loader__dots_a');
-  dotsA.classList.add('loader__dots', 'loader__dots_b');
-
-  loader.append(dotsA, dotsB);
-
-  return loader;
+  container.append(stub);
+  return stub;
 };
 
 export const renderLoader = (container) => {
   const loader = document.createElement('div');
   loader.classList.add('loader');
 
+  if (container === document.body) {
+    document.querySelector('script').before(loader);
+  }
+
   container.append(loader);
-};
 
-export const renderWindowLoaderFinisher = (loader, delay) => {
-  setTimeout(() => {
-    loader.parentElement.classList.add('body-stub_loader');
-    loader.classList.add('loader_finally');
-  }, delay);
-};
-
-export const removeLoader = (loader, delay, isLoaderChild = false) => {
-  setTimeout(() => {
-    isLoaderChild ? loader.parentElement.remove() : loader.remove();
-  }, delay)
+  return loader;
 };
 
 const createModalMessageFragment = () => {
@@ -134,7 +94,7 @@ const createModalMessageFragment = () => {
   overlayCloseButton.type = 'button';
   overlayCloseButton.innerHTML = '&times;';
   overlayCloseButton.classList.add('modal-overlay__close-button');
-  overlayCloseButton.ariaLabel = 'Закрыть уведомление о заказе';
+  overlayCloseButton.ariaLabel = 'Закрыть уведомление';
 
   const orderMessageElement = document.createElement('div');
   orderMessageElement.classList.add('notification-message');
@@ -165,34 +125,11 @@ const createModalMessageFragment = () => {
   return fragment.appendChild(overlayElement);
 };
 
-const getDeliveryDate = () => {
-  const date = new Date();
-
-  // * The month in the Date has an array-like structure, so I don't increment month
-  return `${date.getDate() + 1} ${MonthsRU[date.getMonth()]}`;
-};
-
-export const renderOrderMessage = (orderId) => {
+export const renderNotificationMessageOverlay = (headerText, paragraphMessage) => {
   const messageFragment = createModalMessageFragment();
-  const paragraph = messageFragment.querySelector('p');
 
-  messageFragment.querySelector('h3').textContent = 'Ваш заказ оформлен.';
-  paragraph.textContent = `Номер заказа: ${orderId}\n
-    Вы можете забрать его ${getDeliveryDate()} после 12:00.\n`;
-
-  setPageInert(true);
-  hiddenPageScroll();
-  document.body.append(messageFragment);
-};
-
-export const renderCartErrorMessage = () => {
-  const messageFragment = createModalMessageFragment();
-  const paragraph = messageFragment.querySelector('p');
-
-  messageFragment.querySelector('h3').textContent = 'Уппс... Возникла ошибка!';
-  paragraph.textContent = `Корзина неработоспособна!\n
-    Попытайтесь перезагрузить страницу.\n
-    Если ничего не вышло, то обратитесь к разработчику сайта`;
+  messageFragment.querySelector('h3').textContent = `${headerText}`;
+  messageFragment.querySelector('p').textContent = `${paragraphMessage}`;
 
   setPageInert(true);
   hiddenPageScroll();

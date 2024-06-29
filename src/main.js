@@ -1,5 +1,5 @@
 import barba from '@barba/core';
-import {removeNoJs, renderBodyStubTransit, renderStoreButton, setScrollWindowToTop, renderLoader} from './js/dom';
+import {removeNoJs, renderBodyStubTransit, renderStoreButton, setScrollWindowToTop} from './js/dom';
 import {storeInit} from './js/store'
 import {showBodyTransition, transitionAnimationHandler} from './js/animation';
 
@@ -17,15 +17,14 @@ const init = () => {
   removeNoJs();
 
   barba.init({
-    debug: true,
     views: [
       {
         namespace: 'home',
-        beforeEnter: (data) => renderStoreButton(),
+        beforeEnter: () => renderStoreButton(),
       },
       {
         namespace: 'store',
-        afterEnter: (data) => storeInit(),
+        afterEnter: () => storeInit(),
       }
     ],
     transitions: [

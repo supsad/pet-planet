@@ -1,0 +1,43 @@
+@use "../variables" as *;
+
+.body-stub {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+
+  background-color: #000;
+
+  &_white {
+    background-color: $white;
+  }
+
+  &_transparent {
+    background-color: transparent;
+  }
+
+  &__transit {
+    content: "";
+    position: fixed;
+    left: 0;
+
+    display: block;
+    width: 200%;
+    height: 80%;
+
+    background-color: $white;
+
+    &_left {
+      top: 0;
+      rotate: -195deg;
+    }
+
+    &_right {
+      bottom: 0;
+      rotate: 165deg;
+    }
+  }
+}

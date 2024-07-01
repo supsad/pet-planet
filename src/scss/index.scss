@@ -1,5 +1,6 @@
 @use "default";
 @use "components/button";
+@use "components/counter-button";
 @use "components/header";
 @use "components/hero";
 @use "components/about";
@@ -7,8 +8,13 @@
 @use "components/subscribe";
 @use "components/footer";
 @use "components/store";
-@use "components/product";
-@use "components/modal";
+@use "components/product-card";
+@use "components/modal-cart";
+@use "components/modal-overlay";
 @use "components/cart-item";
+@use "components/radio";
+@use "components/notification-message";
+@use "components/body-stub";
+@use "components/loader";
 
 @import "normalize.css";

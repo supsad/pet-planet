@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 
 <head>
   <meta charset="UTF-8"/>
@@ -15,100 +15,102 @@
   <link rel="stylesheet" href="scss/index.scss">
 </head>
 
-<body>
-<header class="header">
-  <div class="container">
-    <img class="header__logo" src="./img/logo.svg" width="331" height="57"
-         alt="Логотип с лапой магазина PetPlanet">
-  </div>
-</header>
-
-<main>
-  <h1 class="visually-hidden">Pet Planet - магазин товаров для животных</h1>
-
-  <section class="hero">
+<body data-barba="wrapper">
+<div class="barba-wrapper" data-barba="container" data-barba-namespace="home">
+  <header class="header">
     <div class="container">
-      <h2 class="visually-hidden">Товары для твоих любимцев</h2>
-      <img class="hero__title" src="img/title.svg" width="810" height="215"
-           alt="Товары для твоих любимцев">
-
-      <p class="hero__text">Большой выбор домиков, лежанок и&nbsp;кормов для
-        кошек и&nbsp;собак</p>
-
-      <a class="button button_arrow button_green" href="/store.html">Перейти в магазин</a>
+      <img class="header__logo" src="./img/logo.svg" width="331" height="57"
+           alt="Логотип с лапой магазина PetPlanet">
     </div>
-  </section>
+  </header>
 
-  <section class="about">
-    <div class="container">
-      <h2 class="about__title">О&nbsp;нас</h2>
+  <main>
+    <h1 class="visually-hidden">Pet Planet - магазин товаров для животных</h1>
 
-      <div class="about__box">
-        <div class="about__content">
-          <p class="about__text">Мы&nbsp;&mdash; команда любящих
-            и&nbsp;заботливых владельцев животных, которые с&nbsp;особым
-            вниманием относятся к&nbsp;потребностям и&nbsp;радостям наших
-            пушистых друзей.</p>
-          <p class="about__text">Стремясь к&nbsp;тому, чтобы ваш питомец был
-            здоровым, счастливым и&nbsp;полным энергии, мы&nbsp;предлагаем
-            только лучшие товары и&nbsp;услуги, проверенные временем
-            и&nbsp;рекомендованные ветеринарами.</p>
+    <section class="hero">
+      <div class="container">
+        <h2 class="visually-hidden">Товары для твоих любимцев</h2>
+        <img class="hero__title" src="img/title.svg" width="810" height="215"
+             alt="Товары для твоих любимцев">
+
+        <p class="hero__text">Большой выбор домиков, лежанок и&nbsp;кормов для
+          кошек и&nbsp;собак</p>
+
+        <a class="button button_arrow button_green hero__button" href="#">Свяжитесь с нами для заказа</a>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container">
+        <h2 class="about__title">О&nbsp;нас</h2>
+
+        <div class="about__box">
+          <div class="about__content">
+            <p class="about__text">Мы&nbsp;&mdash; команда любящих
+              и&nbsp;заботливых владельцев животных, которые с&nbsp;особым
+              вниманием относятся к&nbsp;потребностям и&nbsp;радостям наших
+              пушистых друзей.</p>
+            <p class="about__text">Стремясь к&nbsp;тому, чтобы ваш питомец был
+              здоровым, счастливым и&nbsp;полным энергии, мы&nbsp;предлагаем
+              только лучшие товары и&nbsp;услуги, проверенные временем
+              и&nbsp;рекомендованные ветеринарами.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="advantages">
-    <div class="advantages__bg">
+    <section class="advantages">
+      <div class="advantages__bg">
+        <div class="container">
+          <h2 class="advantages__title">Наши преимущества</h2>
+
+          <ul class="advantages__list">
+            <li class="advantages__item advantages__item_assortment">
+              <h3 class="advantages__subtitle">Широкий ассортимент</h3>
+              <p class="advantages__text">У&nbsp;нас есть все для того, чтобы
+                сделать жизнь вашего любимца комфортной и&nbsp;уютной.</p>
+            </li>
+            <li class="advantages__item advantages__item_quality">
+              <h3 class="advantages__subtitle">Качество и&nbsp;безопасность</h3>
+              <p class="advantages__text">Мы&nbsp;тщательно отбираем товары для
+                наших клиентов, уделяя особое внимание качеству
+                и&nbsp;безопасности.</p>
+            </li>
+            <li class="advantages__item advantages__item_personal">
+              <h3 class="advantages__subtitle">Персональный подход</h3>
+              <p class="advantages__text">Мы&nbsp;понимаем, что каждый питомец
+                уникален, поэтому предлагаем вам индивидуальные рекомендации
+                по&nbsp;выбору товаров.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="advantages__count-box">
+          <p class="advantages__count">10</p>
+          <p class="advantages__count-text">магазинов в&nbsp;сети</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="subscribe">
       <div class="container">
-        <h2 class="advantages__title">Наши преимущества</h2>
+        <form class="subscribe__form" action="#" method="post">
+          <h2 class="subscribe__title">Подпишись на&nbsp;рассылку и&nbsp;узнавай
+            о&nbsp;новинках первым!</h2>
 
-        <ul class="advantages__list">
-          <li class="advantages__item advantages__item_assortment">
-            <h3 class="advantages__subtitle">Широкий ассортимент</h3>
-            <p class="advantages__text">У&nbsp;нас есть все для того, чтобы
-              сделать жизнь вашего любимца комфортной и&nbsp;уютной.</p>
-          </li>
-          <li class="advantages__item advantages__item_quality">
-            <h3 class="advantages__subtitle">Качество и&nbsp;безопасность</h3>
-            <p class="advantages__text">Мы&nbsp;тщательно отбираем товары для
-              наших клиентов, уделяя особое внимание качеству
-              и&nbsp;безопасности.</p>
-          </li>
-          <li class="advantages__item advantages__item_personal">
-            <h3 class="advantages__subtitle">Персональный подход</h3>
-            <p class="advantages__text">Мы&nbsp;понимаем, что каждый питомец
-              уникален, поэтому предлагаем вам индивидуальные рекомендации
-              по&nbsp;выбору товаров.</p>
-          </li>
-        </ul>
+          <fieldset class="subscribe__field">
+            <input class="subscribe__input" type="email" name="email"
+                   placeholder="E-mail">
+            <button class="button button_arrow button_purple subscribe__button" type="submit">
+              <span class="subscribe__button-text">Отправить</span>
+            </button>
+          </fieldset>
+        </form>
       </div>
-
-      <div class="advantages__count-box">
-        <p class="advantages__count">10</p>
-        <p class="advantages__count-text">магазинов в&nbsp;сети</p>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="subscribe">
-    <div class="container">
-      <form class="subscribe__form" action="#" method="post">
-        <h2 class="subscribe__title">Подпишись на&nbsp;рассылку и&nbsp;узнавай
-          о&nbsp;новинках первым!</h2>
-
-        <fieldset class="subscribe__field">
-          <input class="subscribe__input" type="email" name="email"
-                 placeholder="E-mail">
-          <button class="button button_arrow button_purple subscribe__button" type="submit">
-            <span class="subscribe__button-text">Отправить</span>
-          </button>
-        </fieldset>
-      </form>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
+</div>
 
 <footer class="footer">
   <div class="container footer__container">
@@ -172,6 +174,8 @@
     </address>
   </div>
 </footer>
+
+<script src="main.js" type="module" defer></script>
 </body>
 
 </html>

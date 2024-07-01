@@ -7,7 +7,7 @@
   padding: 0 16px 16px;
 
   text-align: center;
-  background-color: #fff;
+  background-color: $white;
   border-radius: 24px;
 
   &__content {
@@ -36,6 +36,7 @@
   }
 
   &__price {
+    font-size: 24px;
     margin-bottom: 24px;
   }
 
@@ -43,5 +44,9 @@
     width: 100%;
     margin-top: auto;
     padding: 16px 24px;
+
+    @include mobile {
+      font-size: 20px;
+    }
   }
 }

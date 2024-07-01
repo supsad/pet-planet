@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 
 <head>
   <meta charset="UTF-8"/>
@@ -15,64 +15,114 @@
   <link rel="stylesheet" href="scss/index.scss">
 </head>
 
-<body>
-<header class="header">
-  <div class="container">
-    <a href="/index.html">
-      <img class="header__logo" src="./img/logo.svg"
-           alt="Логотип с лапой магазина PetPlanet">
-    </a>
-  </div>
-</header>
-
-<main>
-  <h1 class="visually-hidden">Pet Planet - каталог товаров для животных</h1>
-
-  <section class="hero hero_store">
+<body data-barba="wrapper">
+<div class="barba-wrapper" data-barba="container" data-barba-namespace="store">
+  <header class="header">
     <div class="container">
-      <h2 class="visually-hidden">Товары для твоих любимцев</h2>
-      <img class="hero__title" src="img/title.svg" width="810" height="215"
-           alt="Товары для твоих любимцев">
+      <a href="./index.html">
+        <img class="header__logo" src="./img/logo.svg"
+             alt="Логотип с лапой магазина PetPlanet">
+      </a>
+    </div>
+  </header>
 
-      <p class="hero__text">Большой выбор домиков, лежанок и&nbsp;кормов для кошек и&nbsp;собак</p>
+  <main>
+    <h1 class="visually-hidden">Pet Planet - каталог товаров для животных</h1>
+
+    <section class="hero hero_store">
+      <div class="container">
+        <h2 class="visually-hidden">Товары для твоих любимцев</h2>
+        <img class="hero__title" src="img/title.svg" width="810" height="215"
+             alt="Товары для твоих любимцев">
+
+        <p class="hero__text">Большой выбор домиков, лежанок и&nbsp;кормов для кошек и&nbsp;собак</p>
+      </div>
+    </section>
+
+    <section class="store">
+      <div class="container store__container">
+        <h2 class="store__title">Каталог</h2>
+        <nav class="store__nav">
+          <ul class="store__categories">
+            <li class="store__categories-item store__categories-item_current">
+              <a class="store__categories-button" href="#" data-category="Домики">Домики</a>
+            </li>
+            <li class="store__categories-item">
+              <a class="store__categories-button" href="#" data-category="Лежанки">Лежанки</a>
+            </li>
+            <li class="store__categories-item">
+              <a class="store__categories-button" href="#" data-category="Игрушки">Игрушки</a>
+            </li>
+            <li class="store__categories-item">
+              <a class="store__categories-button" href="#" data-category="Корма">Корма</a>
+            </li>
+          </ul>
+
+          <button class="store__cart-button" type="button" aria-label="Открыть корзину покупок">
+            <span class="store__cart-count">0</span>
+            <svg class="store__cart-icon" width="28" height="28" fill="#E47537" viewBox="0 0 28 28"
+                 xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="14" r="2"/>
+              <circle cx="10" cy="14" r="2"/>
+              <path
+                d="M23.2867 10.4534C22.505 9.59003 21.3267 9.08836 19.6934 8.91336V8.02669C19.6934 6.42836 19.0167 4.88836 17.8267 3.81503C16.625 2.71836 15.0617 2.20503 13.44 2.35669C10.6517 2.62503 8.3067 5.32003 8.3067 8.23669V8.91336C6.67336 9.08836 5.49503 9.59003 4.71336 10.4534C3.5817 11.7134 3.6167 13.3934 3.74503 14.56L4.5617 21.0584C4.8067 23.3334 5.72836 25.6667 10.745 25.6667H17.255C22.2717 25.6667 23.1934 23.3334 23.4384 21.07L24.255 14.5484C24.3834 13.3934 24.4067 11.7134 23.2867 10.4534ZM13.6034 3.97836C14.77 3.87336 15.8784 4.23503 16.7417 5.01669C17.5934 5.78669 18.0717 6.88336 18.0717 8.02669V8.84336H9.92836V8.23669C9.92836 6.16003 11.6434 4.16503 13.6034 3.97836ZM9.82336 15.3417H9.8117C9.17003 15.3417 8.64503 14.8167 8.64503 14.175C8.64503 13.5334 9.17003 13.0084 9.8117 13.0084C10.465 13.0084 10.99 13.5334 10.99 14.175C10.99 14.8167 10.465 15.3417 9.82336 15.3417ZM17.99 15.3417H17.9784C17.3367 15.3417 16.8117 14.8167 16.8117 14.175C16.8117 13.5334 17.3367 13.0084 17.9784 13.0084C18.6317 13.0084 19.1567 13.5334 19.1567 14.175C19.1567 14.8167 18.6317 15.3417 17.99 15.3417Z"/>
+            </svg>
+          </button>
+        </nav>
+
+        <ul class="store__catalog"></ul>
+      </div>
+    </section>
+  </main>
+
+  <section class="modal-overlay">
+    <div class="modal-cart">
+      <div class="modal-cart__content">
+        <div class="modal-cart__container">
+          <h2 class="modal-cart__title">Корзина</h2>
+        </div>
+        <ul class="modal-cart__shopping-list"></ul>
+        <div class="modal-cart__container">
+          <form class="modal-cart__pickup-form" action="https://cyber-dark-scar.glitch.me/api/orders" method="post">
+            <fieldset class="modal-cart__pickup-store">
+              <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
+              <ul class="modal-cart__store-list">
+                <li class="modal-cart__store-item">
+                  <label class="radio modal-cart__store-radio">ул. Адамавая 45/1
+                    <input class="radio__input" type="radio" value="adamavaya-45"
+                           name="delivery-address" id="st-adamavaya" checked>
+                  </label>
+                </li>
+                <li class="modal-cart__store-item">
+                  <label class="radio modal-cart__store-radio">ул. Вишневая 74
+                    <input class="radio__input" type="radio" value="vishnevaya-74"
+                           name="delivery-address" id="st-vishnevaya">
+                  </label>
+                </li>
+                <li class="modal-cart__store-item">
+                  <label class="radio modal-cart__store-radio">ул. Чехова 106/28
+                    <input class="radio__input" type="radio" value="chechova-106"
+                           name="delivery-address" id="st-chechova">
+                  </label>
+                </li>
+              </ul>
+            </fieldset>
+
+            <div class="modal-cart__submit-container">
+              <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
+              <p class="modal-cart__total-price">
+                0&nbsp;
+                <span>&#8381;</span>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <button class="modal-overlay__close-button" type="button" aria-label="Закрыть корзину">&times;</button>
     </div>
   </section>
-
-  <section class="store">
-    <div class="container store__container">
-      <h2 class="store__title">Каталог</h2>
-      <nav class="store__nav">
-        <ul class="store__categories">
-          <li class="store__categories-item">
-            <a class="store__categories-button" href="#" data-category="Домики">Домики</a>
-          </li>
-          <li class="store__categories-item">
-            <a class="store__categories-button" href="#" data-category="Лежанки">Лежанки</a>
-          </li>
-          <li class="store__categories-item store__categories-item_current">
-            <a class="store__categories-button" href="#" data-category="Игрушки">Игрушки</a>
-          </li>
-          <li class="store__categories-item">
-            <a class="store__categories-button" href="#" data-category="Корма">Корма</a>
-          </li>
-        </ul>
-
-        <button class="store__cart-button" type="button" aria-label="Корзина покупок">
-          <span class="store__cart-count">0</span>
-          <svg class="store__cart-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="18" cy="14" r="2" fill="#E47537"/>
-            <circle cx="10" cy="14" r="2" fill="#E47537"/>
-            <path
-              d="M23.2867 10.4534C22.505 9.59003 21.3267 9.08836 19.6934 8.91336V8.02669C19.6934 6.42836 19.0167 4.88836 17.8267 3.81503C16.625 2.71836 15.0617 2.20503 13.44 2.35669C10.6517 2.62503 8.3067 5.32003 8.3067 8.23669V8.91336C6.67336 9.08836 5.49503 9.59003 4.71336 10.4534C3.5817 11.7134 3.6167 13.3934 3.74503 14.56L4.5617 21.0584C4.8067 23.3334 5.72836 25.6667 10.745 25.6667H17.255C22.2717 25.6667 23.1934 23.3334 23.4384 21.07L24.255 14.5484C24.3834 13.3934 24.4067 11.7134 23.2867 10.4534ZM13.6034 3.97836C14.77 3.87336 15.8784 4.23503 16.7417 5.01669C17.5934 5.78669 18.0717 6.88336 18.0717 8.02669V8.84336H9.92836V8.23669C9.92836 6.16003 11.6434 4.16503 13.6034 3.97836ZM9.82336 15.3417H9.8117C9.17003 15.3417 8.64503 14.8167 8.64503 14.175C8.64503 13.5334 9.17003 13.0084 9.8117 13.0084C10.465 13.0084 10.99 13.5334 10.99 14.175C10.99 14.8167 10.465 15.3417 9.82336 15.3417ZM17.99 15.3417H17.9784C17.3367 15.3417 16.8117 14.8167 16.8117 14.175C16.8117 13.5334 17.3367 13.0084 17.9784 13.0084C18.6317 13.0084 19.1567 13.5334 19.1567 14.175C19.1567 14.8167 18.6317 15.3417 17.99 15.3417Z"
-              fill="#E47537"/>
-          </svg>
-        </button>
-      </nav>
-
-      <ul class="store__catalog"></ul>
-    </div>
-  </section>
-</main>
+</div>
 
 <footer class="footer">
   <div class="container footer__container">
@@ -137,94 +187,7 @@
   </div>
 </footer>
 
-<section class="modal-overlay">
-  <div class="modal-cart">
-    <div class="modal-cart__image-container"></div>
-    <div class="modal-cart__content">
-      <h2 class="modal-cart__title">Корзина</h2>
-      <ul class="modal-cart__shopping-list">
-        <li class="cart-item modal-cart__shopping-item">
-          <h3 class="cart-item__title">
-            <a href="#">Домик-конус для питомцев</a>
-          </h3>
-          <div class="cart-item__image-container">
-            <img class="cart-item__image" src="/img/products/house-cone.png"
-                 width="264" height="229" alt="Домик-конус для питомцев">
-          </div>
-          <div class="cart-item__quantity-container">
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-reduce-1" type="button" value="-">
-            <label class="cart-item__quantity-label" for="cart-item-reduce-1">-</label>
-            <span class="cart-item__quantity-amount">1</span>
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-increase-1" type="button" value="+">
-            <label class="cart-item__quantity-label" for="cart-item-increase-1">+</label>
-          </div>
-          <p class="cart-item__price">
-            5700&nbsp;
-            <span>&#8381;</span>
-          </p>
-        </li>
-        <li class="cart-item modal-cart__shopping-item">
-          <h3 class="cart-item__title">
-            <a href="#">Домик со съемной крышей</a>
-          </h3>
-          <div class="cart-item__image-container">
-            <img class="cart-item__image" src="./img/products/removable-roof-house.png"
-                 width="264" height="229" alt="Домик со съемной крышей">
-          </div>
-          <div class="cart-item__quantity-container">
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-reduce-2" type="button" value="-">
-            <label class="cart-item__quantity-label" for="cart-item-reduce-2">-</label>
-            <span class="cart-item__quantity-amount">1</span>
-            <input class="cart-item__quantity-button visually-hidden"
-                   id="cart-item-increase-2" type="button" value="+">
-            <label class="cart-item__quantity-label" for="cart-item-increase-2">+</label>
-          </div>
-          <p class="cart-item__price">
-            7200&nbsp;
-            <span>&#8381;</span>
-          </p>
-        </li>
-      </ul>
-      <form class="modal-cart__pickup-form" action="" method="post">
-        <fieldset class="modal-cart__pickup-store">
-          <legend class="modal-cart__pickup-title">Самовывоз из магазина</legend>
-          <ul class="modal-cart__store-list">
-            <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="adamavaya-45"
-                     name="address" id="st-adamavaya">
-              <label class="modal-cart__store-title" for="st-adamavaya">ул. Адамавая 45/1</label>
-            </li>
-            <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="vishnevaya-74"
-                     name="address" id="st-vishnevaya" checked>
-              <label class="modal-cart__store-title" for="st-vishnevaya">ул. Вишневая 74</label>
-            </li>
-            <li class="modal-cart__store-item">
-              <input class="modal-cart__store-radio visually-hidden" type="radio" value="chechova-106"
-                     name="address" id="st-chechova">
-              <label class="modal-cart__store-title" for="st-chechova">ул. Чехова 106/28</label>
-            </li>
-          </ul>
-        </fieldset>
-
-        <div class="modal-cart__submit-container">
-          <button class="button button_purple modal-cart__submit-button" type="submit">Заказать</button>
-          <p class="modal-cart__total-price">
-            12900&nbsp;
-            <span>&#8381;</span>
-          </p>
-        </div>
-      </form>
-    </div>
-
-    <button class="modal-overlay__close-button" type="button">&times;</button>
-  </div>
-</section>
-
-<script src="index.js"></script>
+<script src="main.js" type="module" defer></script>
 </body>
 
 </html>

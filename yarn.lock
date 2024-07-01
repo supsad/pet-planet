@@ -5,6 +5,16 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@barba/core@npm:^2.9.7":
+  version: 2.10.0
+  resolution: "@barba/core@npm:2.10.0"
+  dependencies:
+    is-promise: "npm:^4.0.0"
+    path-to-regexp: "npm:^6.2.2"
+  checksum: 10c0/d91363b92d2ee3771f5b475181a81befb7a30188039e3ddbcd0db139818c0e943d68893176d9d47a30c1501638504cd173dd4ae92d85d6b564335c052442d7b0
+  languageName: node
+  linkType: hard
+
 "@emnapi/runtime@npm:^1.1.0":
   version: 1.1.1
   resolution: "@emnapi/runtime@npm:1.1.1"
@@ -542,6 +552,13 @@ __metadata:
     clean-stack: "npm:^2.0.0"
     indent-string: "npm:^4.0.0"
   checksum: 10c0/a42f67faa79e3e6687a4923050e7c9807db3848a037076f791d10e092677d65c1d2d863b7848560699f40fc0502c19f40963fb1cd1fb3d338a7423df8e45e039
+  languageName: node
+  linkType: hard
+
+"animejs@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "animejs@npm:3.2.2"
+  checksum: 10c0/f43dfcc0c743a2774e76fbfcb16a22350da7104f413d9d1b85c48128b0c078090642809deb631e21dfa0a40651111be39d9d7f694c9c1b70d8637ce8b6d63116
   languageName: node
   linkType: hard
 
@@ -1189,6 +1206,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-promise@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "is-promise@npm:4.0.0"
+  checksum: 10c0/ebd5c672d73db781ab33ccb155fb9969d6028e37414d609b115cc534654c91ccd061821d5b987eefaa97cf4c62f0b909bb2f04db88306de26e91bfe8ddc01503
+  languageName: node
+  linkType: hard
+
 "isexe@npm:^2.0.0":
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
@@ -1469,6 +1493,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-to-regexp@npm:^6.2.2":
+  version: 6.2.2
+  resolution: "path-to-regexp@npm:6.2.2"
+  checksum: 10c0/4b60852d3501fd05ca9dd08c70033d73844e5eca14e41f499f069afa8364f780f15c5098002f93bd42af8b3514de62ac6e82a53b5662de881d2b08c9ef21ea6b
+  languageName: node
+  linkType: hard
+
 "pathe@npm:^1.1.1":
   version: 1.1.2
   resolution: "pathe@npm:1.1.2"
@@ -1480,6 +1511,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pet-planet@workspace:."
   dependencies:
+    "@barba/core": "npm:^2.9.7"
+    animejs: "npm:^3.2.2"
     normalize.css: "npm:^8.0.1"
     sass: "npm:^1.75.0"
     sharp: "npm:^0.33.3"

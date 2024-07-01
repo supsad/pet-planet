@@ -1,0 +1,135 @@
+@use "../variables" as *;
+@use "../media" as *;
+
+.modal-cart {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 676px;
+  min-height: 459px;
+  max-height: 90vh;
+
+  border-radius: 24px;
+  background-color: $white;
+  box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 100%;
+    background-image: image-set(
+        url("/img/bg-dog-cart.jpg") 1x,
+        url("/img/bg-dog-cart@2x.jpg") 2x
+    );
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    @include mobile {
+      grid-row: 1 / 2;
+    }
+  }
+
+  @include bigscreen {
+    width: 1000px;
+    min-height: 600px;
+  }
+
+  @include tablet {
+    max-width: 600px;
+  }
+
+  @include mobile {
+    grid-template-rows: 150px 1fr;
+    grid-template-columns: 1fr;
+  }
+  
+  @media screen and (max-height: 680px) {
+    grid-template-rows: 1fr;
+
+    &:before {
+      display: none;
+    }
+  }
+
+  &__content {
+    min-height: 100%;
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+
+    /* fixing scrollbar position */
+    padding-right: 0;
+
+    @include mobile {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+    }
+
+    @media screen and (max-height: 680px) {
+      height: 88vh;
+    }
+  }
+
+  &__container {
+    padding-right: 24px;
+  }
+
+  &__title {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &__shopping-list {
+    flex-grow: 1;
+    margin-bottom: 30px;
+    overflow-y: auto;
+
+    /* fixing scrollbar position */
+    padding-right: 24px;
+  }
+
+  &__pickup-form {
+    font-size: 16px;
+  }
+
+  &__pickup-store {
+    padding: 0;
+    margin: 0 0 16px 0;
+    border: none;
+  }
+
+  &__pickup-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__store-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__store-radio {
+    flex-grow: 1;
+    display: block;
+    font-size: 16px;
+  }
+
+  &__submit-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__submit-button {
+    padding: 12px 24px;
+  }
+
+  &__total-price {
+    font-weight: 700;
+    color: $purple;
+  }
+}

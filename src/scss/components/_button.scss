@@ -15,6 +15,7 @@
   transition-property: background-color, transform;
   transition-duration: 0.3s, 0.1s;
   transition-timing-function: ease-in-out;
+  cursor: pointer;
 
   &_arrow {
     display: flex;
@@ -52,6 +53,18 @@
     }
   }
 
+  &_carrot {
+    background-color: $carrot;
+
+    &:hover {
+      background-color: #8c431a;
+    }
+
+    &:focus-visible {
+      outline-color: $green;
+    }
+  }
+
   &:focus-visible {
     outline-color: $carrot;
   }
@@ -62,6 +75,7 @@
 
   &:disabled {
     opacity: 0.4;
+    pointer-events: none;
   }
 
   @include laptop {

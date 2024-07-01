@@ -1,0 +1,29 @@
+@use "../variables" as *;
+@use "../media" as *;
+
+.modal-overlay {
+  position: fixed;
+  display: none;
+  background-color: rgba(black, 0.7);
+  inset: 0;
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+
+  &_show {
+    display: flex;
+  }
+
+  @include mobile {
+    align-items: end;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    font-size: 52px;
+    color: $white;
+  }
+}

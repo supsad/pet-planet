@@ -20,7 +20,7 @@
     "animejs": "^3.2.2",
     "normalize.css": "^8.0.1"
   },
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@pnpm8.15.6",
   "volta": {
     "node": "20.14.0",
     "yarn": "4.2.2"

@@ -4,6 +4,13 @@ import {getPageElements, hiddenPageScroll, renderNotificationMessageOverlay, ren
 import {addToCart, cartButtonHandler, getCartElements, isCartOpen, openCart, updateCartCount} from './cart';
 import {loaderAnimationIn, loaderAnimationOut} from './animation';
 
+const ErrorMessage = {
+  HEADING: 'Уппс... Возникла ошибка!' ,
+  PARAGRAPH: `Корзина неработоспособна!\n
+    Попытайтесь перезагрузить страницу.\n
+    Если ничего не вышло, то обратитесь в поддержку`,
+};
+
 const storeElements = {};
 const getProductName = () => {
   storeElements.productList.addEventListener('click', ({target}) => {
@@ -13,7 +20,7 @@ const getProductName = () => {
 
     const productId = target.dataset.id;
     addToCart(productId);
-  })
+  });
 };
 
 const setDefaultCategory = (category) => {
@@ -40,17 +47,11 @@ const changeCategories = async () => {
     );
     renderProducts(products, storeElements.productList);
   } catch (e) {
-    renderNotificationMessageOverlay(
-      'Уппс... Возникла ошибка!',
-      `Корзина неработоспособна!\n
-    Попытайтесь перезагрузить страницу.\n
-    Если ничего не вышло, то обратитесь в поддержку`,
-    );
+    renderNotificationMessageOverlay(ErrorMessage.HEADING, ErrorMessage.PARAGRAPH);
     throw new Error(`Не удалось загрузить каталог товаров: ${e}`);
   } finally {
     loaderAnimationOut();
   }
-
 
   let activeTarget = currentCategory;
 
@@ -108,11 +109,6 @@ export const storeInit = async () => {
     });
   } catch (e) {
     console.error(`Ошибка открытия корзины: ${e}`);
-    renderNotificationMessageOverlay(
-      'Уппс... Возникла ошибка!',
-      `Корзина неработоспособна!\n
-    Попытайтесь перезагрузить страницу.\n
-    Если ничего не вышло, то обратитесь в поддержку`,
-    );
+    renderNotificationMessageOverlay(ErrorMessage.HEADING, ErrorMessage.PARAGRAPH);
   }
 };

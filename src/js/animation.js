@@ -49,7 +49,7 @@ export const showBodyTransition = async (container, callbackFn) => {
   }
 
   return showAnimation;
-}
+};
 
 const getTransitionAnimationTemplate = (target, side = '', type = '') => {
   const parameters = side === 'left' ? LeftStubElement : RightStubElement;
@@ -75,7 +75,7 @@ export const transitionAnimationHandler = async (parentClass = '', type, callbac
 
   if (parentClass === null || parentClass === undefined || parentClass === '') {
     targetStringLeft = leftClass;
-    targetStringRight = rightClass
+    targetStringRight = rightClass;
   }
 
   const leftAnimation = getTransitionAnimationTemplate(targetStringLeft, 'left', type);

@@ -27,34 +27,33 @@ const init = () => {
         afterEnter: () => storeInit(),
       }
     ],
-    transitions: [
-      {
-        name: 'default-transition',
-        async leave({next}) {
-          renderBodyStubTransit(document.body)
-            .classList.add('body-stub_transition');
-          await transitionAnimationHandler(
-            '.body-stub_transition',
-            'close',
-            () => next.container.remove(),
-          );
-        },
-        async enter({next}) {
-          await showBodyTransition(
-            next.container,
-            async () => {
-              setScrollWindowToTop();
-              await transitionAnimationHandler(
-                '.body-stub_transition',
-                'open',
-                () => document
-                  .querySelector('.body-stub')
-                  .remove(),
-              );
-            },
-          );
-        },
-      }],
+    transitions: [{
+      name: 'default-transition',
+      async leave({next}) {
+        renderBodyStubTransit(document.body)
+          .classList.add('body-stub_transition');
+        await transitionAnimationHandler(
+          '.body-stub_transition',
+          'close',
+          () => next.container.remove(),
+        );
+      },
+      async enter({next}) {
+        await showBodyTransition(
+          next.container,
+          async () => {
+            setScrollWindowToTop();
+            await transitionAnimationHandler(
+              '.body-stub_transition',
+              'open',
+              () => document
+                .querySelector('.body-stub')
+                .remove(),
+            );
+          },
+        );
+      },
+    }],
   });
 };
 
